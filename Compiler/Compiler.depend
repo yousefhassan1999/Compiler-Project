@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1668199982 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"readFile.h"
+
+1668199941 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\readfile.h
+
