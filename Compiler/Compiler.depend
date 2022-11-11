@@ -1,9 +1,20 @@
 # depslib dependency file v1.0
-1668199982 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
+1668201508 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
 	<iostream>
 	<fstream>
 	<string>
-	"readFile.h"
+	"lexicalRules.h"
 
 1668199941 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\readfile.h
+
+1668206856 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"lexicalRules.h"
+	<regex>
+
+1668207351 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.h
+	<tr1/unordered_set>
+	<list>
 
