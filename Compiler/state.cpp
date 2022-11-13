@@ -19,6 +19,9 @@ void State::SetAcceptanceState(bool b){
 void State::SetAddToStateEdges(Edge e){
     stateEdges.push_back(e);
 }
+/*void SetAddToNextStates(string key ,State s){
+
+}*/
 
 bool& State::GetStartState(){
     return startState;

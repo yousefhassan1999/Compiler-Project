@@ -9,7 +9,6 @@ class LexicalGenerator {
 
     LexicalRules lexicalRules;
     std::unordered_map<std::string, State> RegularDifinationsMaps;
-    std::vector<State> Paths;
     State startState;
 
 public:
