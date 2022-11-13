@@ -1,20 +1,53 @@
 # depslib dependency file v1.0
-1668201508 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
+1668301454 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
 	<iostream>
 	<fstream>
 	<string>
+	<vector>
 	"lexicalRules.h"
+	"lexicalGenerator.h"
 
 1668199941 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\readfile.h
 
-1668206856 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.cpp
+1668301441 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.cpp
 	<iostream>
 	<fstream>
 	<string>
-	"lexicalRules.h"
 	<regex>
+	<bits/stdc++.h>
+	"lexicalRules.h"
 
-1668207351 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.h
+1668299062 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.h
 	<tr1/unordered_set>
-	<list>
+	<vector>
+
+1668306686 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.cpp
+	<iostream>
+	<unordered_map>
+	<string>
+	"lexicalGenerator.h"
+	"lexicalRules.h"
+
+1668302129 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.h
+	<unordered_map>
+	"lexicalRules.h"
+	"state.h"
+	"edge.h"
+
+1668307407 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\state.h
+	<vector>
+	<string>
+	"edge.h"
+
+1668307485 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\edge.h
+	"state.h"
+
+1668304439 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\state.cpp
+	<iostream>
+	<vector>
+	"state.h"
+
+1668307498 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\edge.cpp
+	<iostream>
+	"edge.h"
 

@@ -32,9 +32,17 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="edge.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="edge.h" />
+		<Unit filename="lexicalGenerator.cpp" />
+		<Unit filename="lexicalGenerator.h" />
 		<Unit filename="lexicalRules.cpp" />
 		<Unit filename="lexicalRules.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="state.cpp" />
+		<Unit filename="state.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
