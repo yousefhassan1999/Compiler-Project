@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1668366394 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
+1668367638 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\main.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -17,18 +17,18 @@
 	<bits/stdc++.h>
 	"lexicalRules.h"
 
-1668299062 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.h
-	<tr1/unordered_set>
+1668376105 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalrules.h
 	<vector>
+	<map>
 
-1668366718 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.cpp
+1668376975 source:d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.cpp
 	<iostream>
-	<unordered_map>
+	<map>
 	<string>
 	"lexicalGenerator.h"
 	"lexicalRules.h"
 
-1668361230 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.h
+1668369723 d:\fourth_year\first term\compiler\assignments\compiler-project\compiler\lexicalgenerator.h
 	<unordered_map>
 	"lexicalRules.h"
 	"state.h"

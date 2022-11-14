@@ -14,4 +14,5 @@ add_executable(Compiler
         lexicalRules.h
         main.cpp
         state.cpp
-        state.h)
+        state.h
+        nfa.h)

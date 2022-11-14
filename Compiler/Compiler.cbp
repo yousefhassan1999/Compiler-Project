@@ -41,6 +41,9 @@
 		<Unit filename="lexicalRules.cpp" />
 		<Unit filename="lexicalRules.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="nfa.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="state.cpp" />
 		<Unit filename="state.h" />
 		<Extensions>

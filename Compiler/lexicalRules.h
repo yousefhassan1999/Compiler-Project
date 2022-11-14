@@ -25,6 +25,8 @@ private:
     std::string CheckMapSubstring(std::string basicString);
     int isSubstring(std::string basicString, std::string basicString1);
     void UpdateRegularExpressions();
+    std::string AddSeperator(std::string basicString);
+    std::string DeleteLeadingAndTralingSpace(std::string basicString);
 
 };
 

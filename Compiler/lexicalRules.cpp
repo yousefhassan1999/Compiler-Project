@@ -2,6 +2,7 @@
 #include <string>
 #include <regex>
 #include <map>
+#include <iostream>
 #include "lexicalRules.h"
 
 using namespace std;
@@ -12,13 +13,13 @@ void LexicalRules::ReadFileContaint (string Path) {
     while (getline (MyReadFile, myText)) {
         bool check = checkRegularDefinition(myText) || checkPunctuations(myText) || checkKeyWords(myText)? true : false;
         if(!check){
-            myText.erase(std::remove_if(myText.begin(), myText.end(), ::isspace),myText.end());
+            //myText.erase(std::remove_if(myText.begin(), myText.end(), ::isspace),myText.end());
             RegularExpressions.push_back(myText);
         }
     }
     MyReadFile.close();
     UpdateRegularExpressions();
-    /*map<string, string>::iterator itr;
+    map<string, string>::iterator itr;
     cout << "\tKEY\tELEMENT\n";
     for (itr = RegularDefinitionsMap.begin(); itr != RegularDefinitionsMap.end(); ++itr) {
         cout << '\t' << itr->first << '\t' << itr->second
@@ -29,20 +30,22 @@ void LexicalRules::ReadFileContaint (string Path) {
     for (itr1 = RegularExpressionsMap.begin(); itr1 != RegularExpressionsMap.end(); ++itr1) {
         cout << '\t' << itr1->first << '\t' << itr1->second
              << '\n';
-    }*/
+    }
 }
 
 void LexicalRules::UpdateRegularExpressions() {
     for (auto it = RegularExpressions.begin(); it != RegularExpressions.end(); ++it){
         string s = *it;
         int i=0;
-        for(i=0;i<s.size();i++){
+        for(i=0;i<s.length();i++){
             if(s.at(i)==':')
                 break;
         }
         string Key = s.substr(0, i);
         string Value = s.substr(i+1, s.size());
         Value = CheckMapSubstring(Value);
+        Value = DeleteLeadingAndTralingSpace(Value);
+        Value = AddSeperator(Value);
         RegularExpressionsMap.insert(pair<string, string>(Key, Value));
     }
 }
@@ -63,6 +66,23 @@ bool LexicalRules::checkRegularDefinition(string LR){
     }
     return false;
 }
+
+string LexicalRules::DeleteLeadingAndTralingSpace(string basicString) {
+    int i=0;
+    int j=0;
+    for( i=0;i<basicString.length();i++){
+        if(basicString.at(i) != ' '){
+            break;
+        }
+    }
+    for( j=basicString.length()-1; j>-1 ;j--){
+        if(basicString.at(j) != ' '){
+            break;
+        }
+    }
+    return basicString.substr(i,j+1);
+}
+
 
 string LexicalRules::updateMinus(string basicString) {
     while(basicString.find("-") < basicString.size() && basicString.find("-") > 0){
@@ -99,6 +119,27 @@ string LexicalRules::CheckMapSubstring(string basicString) {
     }
     while(old != basicString);
     return basicString;
+}
+
+string LexicalRules::AddSeperator(string basicString) {
+    string newBasicString ;
+    for(int i=0 ; i<basicString.length();i++){
+        if(basicString.at(i)== ' ' && (basicString.at(i-1) == '|' || basicString.at(i+1) == '|')){
+            continue;
+        }
+        else if(basicString.at(i)== ' ' && (basicString.at(i-1) == '(' && basicString.at(i+1) != ')') ){
+            continue;
+        }
+        else if((basicString.at(i)!='(' && basicString.at(i)!=')' && basicString.at(i)!='|' && basicString.at(i)!=' ')&&
+                (i+1 < basicString.length()) &&
+                (basicString.at(i+1)!='|' && basicString.at(i+1)!=')' && basicString.at(i+1)!=' ') ){
+            newBasicString = newBasicString + basicString.at(i) + " ";
+        }
+        else{
+            newBasicString += basicString.at(i);
+        }
+    }
+    return newBasicString;
 }
 
 int LexicalRules::isSubstring(string basicString, string basicString1) {
@@ -152,4 +193,7 @@ map<string, string>& LexicalRules::GetRegularExpressionsMap(){
 vector<string>& LexicalRules::GetRegularExpressions(){
     return RegularExpressions;
 }
+
+
+
 
