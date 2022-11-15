@@ -1,6 +1,6 @@
 #ifndef EDGE_H_INCLUDED
 #define EDGE_H_INCLUDED
-#include "state.h"
+#include "nfaState.h"
 
 class State;        // forward declaration
 class Edge {

@@ -3,15 +3,15 @@
 #include <unordered_map>
 #include <string>
 #include "lexicalRules.h"
-#include "state.h"
+#include "nfaState.h"
 #include "edge.h"
 
 class LexicalGenerator {
 
     LexicalRules lexicalRules;
-    std::unordered_map<std::string, State> regularDefinitionsMaps;
+    std::unordered_map<std::string, NFAstate> regularDefinitionsMaps;
     std::unordered_map<char, int> operatorPrecedence;
-    State startState;
+    NFAstate startState;
 
 public:
     LexicalRules& GetLexicalRules();

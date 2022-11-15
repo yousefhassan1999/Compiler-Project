@@ -88,12 +88,12 @@ string LexicalGenerator::convertToPostfix(string basicString) {
 }
 
 void LexicalGenerator::GenerateKeyWordBranch(string keyWord) {
-    State curruntState = startState;
+    NFAstate curruntState = startState;
     for (int i = 0; i < keyWord.length(); i++) {
         char ch = keyWord.at(i);
         string mapKey;
         mapKey += ch;
-        State newState;
+        NFAstate newState;
         /*State newState;
         Edge e;
         e.setNextState(&newState);
