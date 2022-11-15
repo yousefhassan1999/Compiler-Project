@@ -19,18 +19,6 @@ void LexicalRules::ReadFileContaint (string Path) {
     }
     MyReadFile.close();
     UpdateRegularExpressions();
-    map<string, string>::iterator itr;
-    cout << "\tKEY\tELEMENT\n";
-    for (itr = RegularDefinitionsMap.begin(); itr != RegularDefinitionsMap.end(); ++itr) {
-        cout << '\t' << itr->first << '\t' << itr->second
-             << '\n';
-    }
-    map<string, string>::iterator itr1;
-    cout << "\tKEY\tELEMENT\n";
-    for (itr1 = RegularExpressionsMap.begin(); itr1 != RegularExpressionsMap.end(); ++itr1) {
-        cout << '\t' << itr1->first << '\t' << itr1->second
-             << '\n';
-    }
 }
 
 void LexicalRules::UpdateRegularExpressions() {

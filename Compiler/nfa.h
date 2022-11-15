@@ -1,6 +1,6 @@
 #ifndef NFA_H_INCLUDED
 #define NFA_H_INCLUDED
-#include ""
+
 class NFA {
 
 
