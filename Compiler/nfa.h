@@ -5,21 +5,16 @@
 
 
 class NFA {
-
-    NFAstate startState;
-    NFAstate endState;
+private:
+    NFAstate *startState;
+    NFAstate *endState;
 
 public:
-    void setStartState(NFAstate s);
+    NFA(NFAstate *startState, NFAstate *endState);
 
-    void setEndState(NFAstate s);
+    NFAstate *getStartState();
 
-    NFAstate &getStartState();
-
-    NFAstate &getEndState();
-
-private:
-
+    NFAstate *getEndState();
 };
 
 #endif // NFA_H_INCLUDED

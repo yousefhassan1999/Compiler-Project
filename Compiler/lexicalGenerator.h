@@ -18,13 +18,22 @@ public:
     void GenerateNFA();
 
 private:
-    static void acceptNFA(NFA current, std::string tokenName);
-    static NFA generateBaseNFA(char key);
-    static NFA generateOrNFA(NFA first, NFA second);
-    static NFA generateAndNFA(NFA first, NFA second);
-    static void applyOr(std::stack<NFA>* nfaStack);
-    static void applyOneOrMore(NFA current);
-    static void applyZeroOrMore(NFA current);
+
+    static NFA *generateOrNFA(NFA *first, NFA *second);
+
+    static void applyOr(std::stack<NFA *> *nfaStack);
+
+    static NFA *generateBaseNFA(char key);
+
+    static void applyOneOrMore(NFA *current);
+
+    static void applyZeroOrMore(NFA *current);
+
+    static NFA *generateAndNFA(NFA *first, NFA *second);
+
+    static void applyAnd(std::stack<NFA *> *nfaStack);
+
+    static void acceptNFA(NFA *current, std::string tokenName);
 };
 
 #endif // LEXICALGENERATOR_H_INCLUDED

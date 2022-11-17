@@ -1,19 +1,15 @@
 #include <fstream>
-#include <string>
 #include "nfa.h"
 
-void NFA::setStartState(NFAstate s) {
-    startState = s;
+NFA::NFA(NFAstate *startState, NFAstate *endState) {
+    this->startState = startState;
+    this->endState = endState;
 }
 
-void NFA::setEndState(NFAstate s) {
-    endState = s;
-}
-
-NFAstate &NFA::getStartState() {
+NFAstate *NFA::getStartState() {
     return startState;
 }
 
-NFAstate &NFA::getEndState() {
+NFAstate *NFA::getEndState() {
     return endState;
 }

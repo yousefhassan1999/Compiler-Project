@@ -20,7 +20,7 @@ public:
 
     void SetAcceptence(bool b);
 
-    void SetAddTransitions(char key, NFAstate s);
+    void SetAddTransitions(char key, NFAstate* s);
 
     bool &GetAcceptence();
 

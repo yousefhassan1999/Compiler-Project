@@ -16,12 +16,12 @@ void NFAstate::SetAcceptence(bool b) {
     Acceptence = b;
 }
 
-void NFAstate::SetAddTransitions(char key, NFAstate s) {
+void NFAstate::SetAddTransitions(char key, NFAstate* s) {
     if (transitions.find(key) != transitions.end()) {
-        transitions[key].push_back(&s);
+        transitions[key].push_back(s);
     } else {
         vector<NFAstate *> vec;
-        vec.push_back(&s);
+        vec.push_back(s);
         transitions[key] = vec;
     }
 }
