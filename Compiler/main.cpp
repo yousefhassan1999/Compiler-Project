@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     LexicalGenerator ob;
     ob.GetLexicalRules().ReadFileContaint(
-            "C:\\Users\\ahmed\\Desktop\\lexical rules.txt");
+            "D:\\fourth_year\\first term\\Compiler\\Assignments\\Compiler-Project\\Compiler\\lexical rules.txt");
     // ob.GenerateNFA();
     return 0;
 }

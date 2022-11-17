@@ -77,6 +77,13 @@ build CMakeFiles/Compiler.dir/nfaState.cpp.obj: CXX_COMPILER__Compiler_Debug D$:
   OBJECT_DIR = CMakeFiles\Compiler.dir
   OBJECT_FILE_DIR = CMakeFiles\Compiler.dir
 
+build CMakeFiles/Compiler.dir/nfa.cpp.obj: CXX_COMPILER__Compiler_Debug D$:/fourth_year/first$ term/Compiler/Assignments/Compiler-Project/Compiler/nfa.cpp || cmake_object_order_depends_target_Compiler
+  DEP_FILE = CMakeFiles\Compiler.dir\nfa.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"D:/fourth_year/first term/Compiler/Assignments/Compiler-Project/Compiler/."
+  OBJECT_DIR = CMakeFiles\Compiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\Compiler.dir
+
 build CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj: CXX_COMPILER__Compiler_Debug D$:/fourth_year/first$ term/Compiler/Assignments/Compiler-Project/Compiler/nfaPostfix.cpp || cmake_object_order_depends_target_Compiler
   DEP_FILE = CMakeFiles\Compiler.dir\nfaPostfix.cpp.obj.d
   FLAGS = -g -std=gnu++14
@@ -92,7 +99,7 @@ build CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj: CXX_COMPILER__Compiler_Debug D
 #############################################
 # Link the executable Compiler.exe
 
-build Compiler.exe: CXX_EXECUTABLE_LINKER__Compiler_Debug CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj CMakeFiles/Compiler.dir/lexicalRules.cpp.obj CMakeFiles/Compiler.dir/main.cpp.obj CMakeFiles/Compiler.dir/nfaState.cpp.obj CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj
+build Compiler.exe: CXX_EXECUTABLE_LINKER__Compiler_Debug CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj CMakeFiles/Compiler.dir/lexicalRules.cpp.obj CMakeFiles/Compiler.dir/main.cpp.obj CMakeFiles/Compiler.dir/nfaState.cpp.obj CMakeFiles/Compiler.dir/nfa.cpp.obj CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Compiler.dir

@@ -1,15 +1,16 @@
 # ninja log v5
-9	3093	6903465762675839	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
+5	2920	6903473983523162	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
 2	482	6902277870696111	CMakeFiles/Compiler.dir/edge.cpp.obj	3c3b084f7f4eb8a4
 8	654	6900634995737072	CMakeFiles/Compiler.dir/state.cpp.obj	ad45f170ad815cc9
-3	243	6903448239522335	CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj	ad509680b94c15c
-6	770	6903465739513183	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
-464	2613	6903465975870542	Compiler.exe	764fdc84d3ef7302
-2	464	6903465954418885	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
-11	679	6902277872650884	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
 13	237	6903473956796643	CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj	ad509680b94c15c
-5	2920	6903473983523162	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
-3	502	6903474364794830	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
-6	587	6903474365652536	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
-9	641	6903474366191520	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
-641	2744	6903474387171059	Compiler.exe	985bcccf877d2551
+21	1123	6903896167380523	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
+495	2543	6903481121947913	Compiler.exe	985bcccf877d2551
+10	1261	6903896168748903	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
+14	1138	6903894354407472	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
+6	991	6903898888877216	CMakeFiles/Compiler.dir/nfa.cpp.obj	83e0d9e4972249c7
+991	4432	6903898923215459	Compiler.exe	d1255c0d4efbdf9c
+13	946	6903899529766240	CMakeFiles/Compiler.dir/nfa.cpp.obj	83e0d9e4972249c7
+9	977	6903899530045462	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
+16	1042	6903899530725851	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
+4	1195	6903899532239835	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
+1196	5117	6903899571379558	Compiler.exe	d1255c0d4efbdf9c

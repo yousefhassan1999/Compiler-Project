@@ -14,5 +14,6 @@ add_executable(Compiler
         nfaState.cpp
         nfaState.h
         nfa.h
+        nfa.cpp
         nfaPostfix.h
         nfaPostfix.cpp)
