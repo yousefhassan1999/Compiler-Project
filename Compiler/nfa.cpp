@@ -2,18 +2,18 @@
 #include <string>
 #include "nfa.h"
 
-void NFA::SetStartState(NFAstate s) {
+void NFA::setStartState(NFAstate s) {
     startState = s;
 }
 
-void NFA::SetEndState(NFAstate s) {
+void NFA::setEndState(NFAstate s) {
     endState = s;
 }
 
-NFAstate &NFA::GetStartState() {
+NFAstate &NFA::getStartState() {
     return startState;
 }
 
-NFAstate &NFA::GetEndState() {
+NFAstate &NFA::getEndState() {
     return endState;
 }

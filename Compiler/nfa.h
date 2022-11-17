@@ -10,13 +10,13 @@ class NFA {
     NFAstate endState;
 
 public:
-    void SetStartState(NFAstate s);
+    void setStartState(NFAstate s);
 
-    void SetEndState(NFAstate s);
+    void setEndState(NFAstate s);
 
-    NFAstate &GetStartState();
+    NFAstate &getStartState();
 
-    NFAstate &GetEndState();
+    NFAstate &getEndState();
 
 private:
 

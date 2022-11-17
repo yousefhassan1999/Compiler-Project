@@ -32,29 +32,17 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="edge.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="edge.h" />
 		<Unit filename="lexicalGenerator.cpp" />
 		<Unit filename="lexicalGenerator.h" />
 		<Unit filename="lexicalRules.cpp" />
 		<Unit filename="lexicalRules.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="nfa.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="nfa.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="nfaPostfix.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="nfaPostfix.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="state.cpp" />
-		<Unit filename="state.h" />
+		<Unit filename="nfa.cpp" />
+		<Unit filename="nfa.h" />
+		<Unit filename="nfaPostfix.cpp" />
+		<Unit filename="nfaPostfix.h" />
+		<Unit filename="nfaState.cpp" />
+		<Unit filename="nfaState.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
