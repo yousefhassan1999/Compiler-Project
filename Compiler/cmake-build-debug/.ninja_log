@@ -20,3 +20,10 @@
 1027	5054	6903913249663422	Compiler.exe	d1255c0d4efbdf9c
 11	1399	6903913698636539	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
 1399	4837	6903913732971027	Compiler.exe	d1255c0d4efbdf9c
+0	310	6903988610949567	CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj	ad509680b94c15c
+11	709	6903988614929379	CMakeFiles/Compiler.dir/nfa.cpp.obj	83e0d9e4972249c7
+14	772	6903988615560893	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
+8	804	6903988615889610	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
+6	906	6903988616908138	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
+3	3095	6903988638734192	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
+3095	5210	6903988659885471	Compiler.exe	d1255c0d4efbdf9c
