@@ -6,14 +6,14 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(Compiler
-        lexicalGenerator.cpp
-        lexicalGenerator.h
-        lexicalRules.cpp
-        lexicalRules.h
-        main.cpp
-        nfaState.cpp
-        nfaState.h
-        nfa.h
-        nfa.cpp
-        nfaPostfix.h
-        nfaPostfix.cpp)
+        src/lexicalAnalysis/lexicalGenerator.cpp
+        src/lexicalAnalysis/lexicalGenerator.h
+        src/lexicalAnalysis/lexicalRules.cpp
+        src/lexicalAnalysis/lexicalRules.h
+        src/main.cpp
+        src/lexicalAnalysis/nfaState.cpp
+        src/lexicalAnalysis/nfaState.h
+        src/lexicalAnalysis/nfa.h
+        src/lexicalAnalysis/nfa.cpp
+        src/lexicalAnalysis/nfaPostfix.h
+        src/lexicalAnalysis/nfaPostfix.cpp)
