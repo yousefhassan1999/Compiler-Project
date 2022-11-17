@@ -1,12 +1,15 @@
 # ninja log v5
-26	14316	6902210146832019	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
-11	575	6900634994959179	CMakeFiles/Compiler.dir/edge.cpp.obj	3c3b084f7f4eb8a4
-8	654	6900634995737072	CMakeFiles/Compiler.dir/state.cpp.obj	ad45f170ad815cc9
-32	3254	6902222983106300	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
-1246	3978	6902260031854454	Compiler.exe	a8a263514b9d4fb8
-3	1246	6902260004592253	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
+9	3093	6903465762675839	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
 2	482	6902277870696111	CMakeFiles/Compiler.dir/edge.cpp.obj	3c3b084f7f4eb8a4
+8	654	6900634995737072	CMakeFiles/Compiler.dir/state.cpp.obj	ad45f170ad815cc9
+3	243	6903448239522335	CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj	ad509680b94c15c
+6	770	6903465739513183	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
+464	2613	6903465975870542	Compiler.exe	764fdc84d3ef7302
+2	464	6903465954418885	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
 11	679	6902277872650884	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
-8	685	6902277872710733	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
-5	991	6902277875772540	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
-992	2910	6902277894904152	Compiler.exe	9e24c5c21390f04e
+13	237	6903473956796643	CMakeFiles/Compiler.dir/nfaPostfix.cpp.obj	ad509680b94c15c
+5	2920	6903473983523162	CMakeFiles/Compiler.dir/lexicalRules.cpp.obj	fdc152cac7b08f46
+3	502	6903474364794830	CMakeFiles/Compiler.dir/lexicalGenerator.cpp.obj	f8bcbf76676902c7
+6	587	6903474365652536	CMakeFiles/Compiler.dir/nfaState.cpp.obj	d815e5a52895b227
+9	641	6903474366191520	CMakeFiles/Compiler.dir/main.cpp.obj	e284212a1182abc8
+641	2744	6903474387171059	Compiler.exe	985bcccf877d2551

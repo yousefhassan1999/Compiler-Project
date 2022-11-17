@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(Compiler
-        edge.cpp
-        edge.h
         lexicalGenerator.cpp
         lexicalGenerator.h
         lexicalRules.cpp
@@ -15,4 +13,6 @@ add_executable(Compiler
         main.cpp
         nfaState.cpp
         nfaState.h
-        nfa.h)
+        nfa.h
+        nfaPostfix.h
+        nfaPostfix.cpp)

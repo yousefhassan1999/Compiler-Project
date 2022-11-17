@@ -44,6 +44,12 @@
 		<Unit filename="nfa.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="nfaPostfix.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="nfaPostfix.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="state.cpp" />
 		<Unit filename="state.h" />
 		<Extensions>
