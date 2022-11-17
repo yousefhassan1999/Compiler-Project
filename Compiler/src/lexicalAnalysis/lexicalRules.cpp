@@ -74,8 +74,6 @@ bool LexicalRules::checkRegularDefinition(string LR) {
         string Value = newLR.substr(pos + 1, newLR.size() - 1);
         Value = checkMapSubstring(Value);
         RegularDefinitionsMap.insert(pair<string, string>(Key, Value));
-
-        string ValuePostfix = convertToPostfix(Value);
         return true;
     }
     return false;
