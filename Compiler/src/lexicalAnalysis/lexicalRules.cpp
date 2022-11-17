@@ -76,10 +76,6 @@ bool LexicalRules::checkRegularDefinition(string LR) {
         RegularDefinitionsMap.insert(pair<string, string>(Key, Value));
 
         string ValuePostfix = convertToPostfix(Value);
-        NFAPostfix newNFAPostfix;
-        newNFAPostfix.setTokenName(Key);
-        newNFAPostfix.setPostFix(ValuePostfix);
-        rules.push_back(newNFAPostfix);
         return true;
     }
     return false;
