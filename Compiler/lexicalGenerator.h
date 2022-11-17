@@ -2,9 +2,10 @@
 #define LEXICALGENERATOR_H_INCLUDED
 
 #include <unordered_map>
-#include <string>
+#include <stack>
 #include "lexicalRules.h"
 #include "nfaState.h"
+#include "nfa.h"
 
 class LexicalGenerator {
 
@@ -17,10 +18,11 @@ public:
     void GenerateNFA();
 
 private:
-    void acceptNFA(NFA current, string tokenName);
+    void acceptNFA(NFA current, std::string tokenName);
     NFA generateBaseNFA(char key);
     NFA generateOrNFA(NFA first, NFA second);
     NFA generateAndNFA(NFA first, NFA second);
+    void applyOr(std::stack<NFA> nfaStack);
     void applyOneOrMore(NFA current);
     void applyZeroOrMore(NFA current);
 };

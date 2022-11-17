@@ -2,7 +2,6 @@
 #define STATE_H_INCLUDED
 
 #include <vector>
-#include <string>
 #include <unordered_map>
 #include <map>
 

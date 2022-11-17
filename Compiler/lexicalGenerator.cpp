@@ -1,10 +1,6 @@
 #include <iostream>
-#include <string>
-#include <stack>
 #include "lexicalGenerator.h"
 #include "lexicalRules.h"
-#include "nfa.h"
-
 
 #define EPSILON ' '
 
@@ -18,11 +14,7 @@ void LexicalGenerator::GenerateNFA() {
     for (auto &rule: lexicalRules.GetRules()){
         for (auto &ch : rule.getPostFix()){
             if(ch == '|'){
-                NFA first = nfaStack.top();
-                nfaStack.pop();
-                NFA second = nfaStack.top();
-                nfaStack.pop();
-                nfaStack.push(generateOrNFA(first,second));
+                applyOr(nfaStack);
             } else if(ch == '*'){
                 applyZeroOrMore(nfaStack.top());
             } else if (ch == '+'){
@@ -37,7 +29,7 @@ void LexicalGenerator::GenerateNFA() {
                 nfaStack.push(generateBaseNFA(ch));
             }
         }
-        acceptNFA(nfaStack.top(),rule.getTokenName());
+        acceptNFA(nfaStack.top(), rule.getTokenName());
         //TODO: merge the resulted NFA from Stack into one using or condition
     }
 }
@@ -81,6 +73,14 @@ NFA LexicalGenerator::generateAndNFA(NFA first, NFA second) {
     generatedNFA.SetStartState(generatedStartState);
     generatedNFA.SetEndState(generatedEndState);
     return generatedNFA;
+}
+
+void LexicalGenerator::applyOr(stack<NFA> nfaStack){
+    NFA first = nfaStack.top();
+    nfaStack.pop();
+    NFA second = nfaStack.top();
+    nfaStack.pop();
+    nfaStack.push(generateOrNFA(first,second));
 }
 
 void LexicalGenerator::applyOneOrMore(NFA current){
