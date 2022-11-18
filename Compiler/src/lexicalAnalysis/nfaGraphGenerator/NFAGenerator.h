@@ -22,7 +22,7 @@ public:
         this->lexicalRules = lexicalRules;
     }
 
-    void generateNFA();
+    NFAstate *generateNFA();
 
     NFAstate *getNFARoot() {
         return nfaRoot;

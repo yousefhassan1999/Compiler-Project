@@ -7,7 +7,7 @@
 #define EPSILON ' '
 using namespace std;
 
-void NFAGenerator::generateNFA() {
+NFAstate *NFAGenerator::generateNFA() {
     stack<NFAStackNode *> nfaStack;
     for (auto rule: lexicalRules->getRules()) {
         for (auto ch: rule.getPostFix()) {
@@ -29,6 +29,7 @@ void NFAGenerator::generateNFA() {
         }
     }
     setNFARoot(nfaStack.top());
+    return nfaRoot;
 }
 
 
