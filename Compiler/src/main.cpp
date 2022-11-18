@@ -3,7 +3,6 @@
 #include "src/lexicalAnalysis/lexicalGenerator.h"
 #include "src/lexicalAnalysis/dfa_minimization/DFA.h"
 #include "src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h"
-#include <unordered_map>
 
 using namespace std;
 
@@ -15,14 +14,16 @@ int main() {
 //    ob.generateNfa();
     DFAMinimizer minimizer;
     DFA *dfa = makeDFA();
-    DFA *minimized = minimizer.minimize(dfa);
+    DFA *minDFA = minimizer.minimize(dfa);
+
     delete dfa;
-    printf("Debug!\n");
+    delete minDFA;
+//    printf("Debug!\n");
     return 0;
 }
 
 DFA* makeDFA() {
-    DFA* dfa = new DFA(6, 2);
+    DFA* dfa = new DFA(6);
 
     dfa->addTransition(0, 'a', 1);
     dfa->addTransition(0, 'b', 2);

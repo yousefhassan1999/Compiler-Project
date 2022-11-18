@@ -6,8 +6,8 @@ DFA* DFAMinimizer::minimize(DFA *dfa) {
 }
 
 vector<int> DFAMinimizer::findEquivalence(DFA *dfa) {
-    vector<vector<int>> &table = dfa->getTransitionTable();
-    int nStates = table.size();
+    vector<unordered_map<char, toState>> &table = dfa->getTransitionTable();
+    size_t nStates = table.size();
 
     // divide into final and non-final groups
     vector<int> group(nStates);
@@ -70,9 +70,14 @@ vector<vector<int>> DFAMinimizer::groupsList(vector<int> &group, int nGroups) {
 }
 
 bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, DFA *dfa) {
-    vector<vector<int>> &table = dfa->getTransitionTable();
-    for(int i = 0; i < table[0].size(); ++i) {
-        if(group[table[s1][i]] != group[table[s2][i]]) {
+    unordered_map<char, toState> &edges1 = dfa->getTransitionTable()[s1];
+    unordered_map<char, toState> &edges2 = dfa->getTransitionTable()[s2];
+
+    if(edges1.size() != edges2.size())
+        return false;
+
+    for(auto edge : edges1) {
+        if(group[dfa->nextState(s1, edge.first)] != group[dfa->nextState(s2, edge.first)]) {
             return false;
         }
     }
@@ -80,7 +85,27 @@ bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, DFA *dfa) {
 }
 
 DFA *DFAMinimizer::mergeGroups(vector<int> &group, DFA *dfa) {
-    return nullptr;
+    int nGroup = countGroups(group);
+    DFA *minDFA = new DFA(nGroup);
+    vector<vector<int>> groups_list = groupsList(group, countGroups(group));
+
+    for(auto g : groups_list) {
+        int groupRep = g[0], newState = group[groupRep];
+        // Add transitions
+        for (auto edge : dfa->getTransitionTable()[groupRep]) {
+            minDFA->addTransition(newState, edge.first, group[edge.second.get()]);
+        }
+        // Check for acceptance state within the group
+        for (auto s : g) {
+            StateInfo info = dfa->getStateInfo(s);
+            if(info.acceptance) {
+                minDFA->addAcceptanceState(newState, info.tokenName, info.tokenLexema);
+                break;
+            }
+        }
+    }
+
+    return minDFA;
 }
 
 
