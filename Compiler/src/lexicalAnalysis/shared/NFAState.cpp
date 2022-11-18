@@ -1,7 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include "nfaState.h"
+#include "NFAState.h"
 
 using namespace std;
 
