@@ -4,19 +4,19 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
-#include "nfaPostfix.h"
+#include "src/lexicalAnalysis/shared/PostfixContainer.h"
 
 class LexicalRules {
 
     std::map<std::string, std::string> RegularDefinitionsMap;
     std::vector<std::string> RegularExpressions;
     std::unordered_map<char, int> operatorPrecedence;
-    std::vector<NFAPostfix> rules;
+    std::vector<PostfixContainer> rules;
 
 public:
     void readFileContent(const std::string& Path);
 
-    std::vector<NFAPostfix> &getRules();
+    std::vector<PostfixContainer>* getRules();
 
 private:
     bool checkRegularDefinition(std::string LR);
@@ -39,6 +39,7 @@ private:
 
     std::string convertToPostfix(std::string basicString);
 
+    std::string specialConvertToPostfix(std::string basicString);
 };
 
 #endif // LEXICAL_RULES_H_INCLUDED

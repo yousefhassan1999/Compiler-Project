@@ -1,11 +1,11 @@
 #include "DFAMinimizer.h"
 
-DFA* DFAMinimizer::minimize(DFA *dfa) {
+vectorDFA* DFAMinimizer::minimize(vectorDFA *dfa) {
     vector<int> group = findEquivalence(dfa);
     return mergeGroups(group, dfa);
 }
 
-vector<int> DFAMinimizer::findEquivalence(DFA *dfa) {
+vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
     vector<unordered_map<char, toState>> &table = dfa->getTransitionTable();
     size_t nStates = table.size();
 
@@ -69,7 +69,7 @@ vector<vector<int>> DFAMinimizer::groupsList(vector<int> &group, int nGroups) {
     return groups;
 }
 
-bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, DFA *dfa) {
+bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa) {
     unordered_map<char, toState> &edges1 = dfa->getTransitionTable()[s1];
     unordered_map<char, toState> &edges2 = dfa->getTransitionTable()[s2];
 
@@ -84,9 +84,9 @@ bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, DFA *dfa) {
     return true;
 }
 
-DFA *DFAMinimizer::mergeGroups(vector<int> &group, DFA *dfa) {
+vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
     int nGroup = countGroups(group);
-    DFA *minDFA = new DFA(nGroup);
+    vectorDFA *minDFA = new vectorDFA(nGroup);
     vector<vector<int>> groups_list = groupsList(group, countGroups(group));
 
     for(auto g : groups_list) {

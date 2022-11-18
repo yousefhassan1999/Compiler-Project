@@ -11,9 +11,17 @@ add_executable(Compiler
         src/lexicalAnalysis/lexicalRules.cpp
         src/lexicalAnalysis/lexicalRules.h
         src/main.cpp
-        src/lexicalAnalysis/nfaState.cpp
-        src/lexicalAnalysis/nfaState.h
-        src/lexicalAnalysis/nfa.h
-        src/lexicalAnalysis/nfa.cpp
-        src/lexicalAnalysis/nfaPostfix.h
-        src/lexicalAnalysis/nfaPostfix.cpp src/lexicalAnalysis/dfa_minimization/DFA.cpp src/lexicalAnalysis/dfa_minimization/DFA.h src/lexicalAnalysis/dfa_minimization/DFAMinimizer.cpp src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h)
+        src/lexicalAnalysis/shared/NFAState.cpp
+        src/lexicalAnalysis/shared/NFAState.h
+        src/lexicalAnalysis/nfaGraphGenerator/NFAStackNode.h
+        src/lexicalAnalysis/nfaGraphGenerator/NFAStackNode.cpp
+        src/lexicalAnalysis/shared/PostfixContainer.h
+        src/lexicalAnalysis/shared/PostfixContainer.cpp
+        src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.cpp
+        src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.h
+        src/lexicalAnalysis/dfaGraphGenerator/DFA.h
+        src/lexicalAnalysis/dfaGraphGenerator/DFA.cpp
+        src/lexicalAnalysis/dfa_minimization/vectorDFA.cpp
+        src/lexicalAnalysis/dfa_minimization/vectorDFA.h
+        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.cpp
+        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h)

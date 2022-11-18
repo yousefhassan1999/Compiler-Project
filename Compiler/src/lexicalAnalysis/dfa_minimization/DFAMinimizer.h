@@ -1,18 +1,18 @@
 #ifndef COMPILER_DFA_MINIMIZER_H
 #define COMPILER_DFA_MINIMIZER_H
 
-#include "DFA.h"
+#include "vectorDFA.h"
 
 class DFAMinimizer {
 private:
-    vector<int> findEquivalence(DFA *dfa);
+    vector<int> findEquivalence(vectorDFA *dfa);
     vector<vector<int>> groupsList(vector<int> &group, int nGroups);
-    DFA* mergeGroups(vector<int> &group, DFA *dfa);
+    vectorDFA* mergeGroups(vector<int> &group, vectorDFA *dfa);
     void removeDeadStates();
     int countGroups(vector<int> &group);
-    bool equivalent(int s1, int s2, vector<int> &group, DFA *dfa);
+    bool equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa);
 public:
-    DFA* minimize(DFA *dfa);
+    vectorDFA* minimize(vectorDFA *dfa);
 };
 
 

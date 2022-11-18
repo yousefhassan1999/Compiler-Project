@@ -2,11 +2,12 @@
 #include <string>
 #include <regex>
 #include <map>
+#include <iostream>
 #include "lexicalRules.h"
 
 using namespace std;
 
-void LexicalRules::readFileContent(const string& Path) {
+void LexicalRules::readFileContent(const string &Path) {
     operatorPrecedence.insert(pair<char, int>('*', 3));
     operatorPrecedence.insert(pair<char, int>('+', 3));
     operatorPrecedence.insert(pair<char, int>(' ', 2));
@@ -31,9 +32,11 @@ bool LexicalRules::checkPunctuations(string LR) {
         stringstream ss(LR);
         string word;
         while (ss >> word) {
-            NFAPostfix newNFAPostfix;
+            string value(word);
+            value = specialConvertToPostfix(value);
+            PostfixContainer newNFAPostfix;
             newNFAPostfix.setTokenName("Punctuations");
-            newNFAPostfix.setPostFix(word);
+            newNFAPostfix.setPostFix(value);
             rules.push_back(newNFAPostfix);
         }
         return true;
@@ -48,9 +51,11 @@ bool LexicalRules::checkKeyWords(string LR) {
         stringstream ss(LR);
         string word;
         while (ss >> word) {
-            NFAPostfix newNFAPostfix;
+            string value(word);
+            value = specialConvertToPostfix(value);
+            PostfixContainer newNFAPostfix;
             newNFAPostfix.setTokenName("Keyword");
-            newNFAPostfix.setPostFix(word);
+            newNFAPostfix.setPostFix(value);
             rules.push_back(newNFAPostfix);
         }
         return true;
@@ -69,19 +74,13 @@ bool LexicalRules::checkRegularDefinition(string LR) {
         string Value = newLR.substr(pos + 1, newLR.size() - 1);
         Value = checkMapSubstring(Value);
         RegularDefinitionsMap.insert(pair<string, string>(Key, Value));
-
-        string ValuePostfix = convertToPostfix(Value);
-        NFAPostfix newNFAPostfix;
-        newNFAPostfix.setTokenName(Key);
-        newNFAPostfix.setPostFix(ValuePostfix);
-        rules.push_back(newNFAPostfix);
         return true;
     }
     return false;
 }
 
 void LexicalRules::updateRegularExpressions() {
-    for (auto s : RegularExpressions) {
+    for (auto s: RegularExpressions) {
         int i;
         for (i = 0; i < s.length(); i++) {
             if (s.at(i) == ':')
@@ -94,7 +93,7 @@ void LexicalRules::updateRegularExpressions() {
         Value = addSeparator(Value);
         Value = convertToPostfix(Value);
 
-        NFAPostfix newNFAPostfix;
+        PostfixContainer newNFAPostfix;
         newNFAPostfix.setTokenName(Key);
         newNFAPostfix.setPostFix(Value);
         rules.push_back(newNFAPostfix);
@@ -137,7 +136,7 @@ string LexicalRules::checkMapSubstring(string basicString) {
     return basicString;
 }
 
-int LexicalRules::isSubstring(const string& basicString, const string& basicString1) {
+int LexicalRules::isSubstring(const string &basicString, const string &basicString1) {
     if (basicString1.find(basicString) != string::npos)
         return basicString1.find(basicString);
     return -1;
@@ -181,7 +180,7 @@ string LexicalRules::deleteLeadingAndTrailingSpace(string basicString) {
 string LexicalRules::convertToPostfix(string basicString) {
     stack<char> Stack;
     string newString;
-    for (char Ch : basicString) {
+    for (char Ch: basicString) {
         if (operatorPrecedence.find(Ch) != operatorPrecedence.end()) {
             auto operatorChar = operatorPrecedence.find(Ch);
             while (!Stack.empty() && Stack.top() != '(' &&
@@ -209,8 +208,21 @@ string LexicalRules::convertToPostfix(string basicString) {
     return newString;
 }
 
-vector<NFAPostfix> &LexicalRules::getRules() {
-    return rules;
+string LexicalRules::specialConvertToPostfix(string basicString) {
+    string newValue;
+    if (basicString.length() < 2)
+        return basicString;
+    newValue = newValue + basicString.at(0) + basicString.at(1) + " ";
+    int i=2;
+    while(i < basicString.length()){
+        newValue = newValue + basicString.at(i) + " ";
+        i++;
+    }
+    return newValue;
+}
+
+vector<PostfixContainer>* LexicalRules::getRules() {
+    return &rules;
 }
 
 
