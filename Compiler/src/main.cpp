@@ -9,7 +9,7 @@ int main() {
     LexicalGenerator ob;
     ob.getLexicalRules()->readFileContent(".././lexical rules.txt");
     NFAGenerator nfaGenerator(ob.getLexicalRules());
-    DFA dfa(ob.getLexicalRules()->getRules(),nfaGenerator.getNFARoot());
-    dfa.build_DFA();
+    /*DFA dfa(ob.getLexicalRules()->getRules(),nfaGenerator.getNFARoot());
+    dfa.build_DFA();*/
     return 0;
 }

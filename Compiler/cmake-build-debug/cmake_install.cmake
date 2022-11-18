@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ahmed/git/Compiler-Project/Compiler
+# Install script for directory: F:/Subjects/Compiler-Project/Compiler
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/ahmed/git/Compiler-Project/Compiler/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "F:/Subjects/Compiler-Project/Compiler/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
