@@ -13,7 +13,7 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
     while (!stack.empty()) {
         auto k = stack.top();
         stack.pop();
-        unordered_map<char, vector<NFAstate*>> transitions = k->GetTransitions();
+        unordered_map<char, vector<NFAstate*>> transitions = k->getTransitions();
         vector<NFAstate *> vec = transitions[' '];
         for (auto &t: vec) {
             closure->insert(t);
@@ -28,7 +28,7 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
 unordered_set<NFAstate*> DFA::move(unordered_set<NFAstate*> closure, char a) {
     unordered_set<NFAstate *> new_closure;
     for (auto k: closure) {
-        unordered_map<char, vector<NFAstate *>> transitions = k->GetTransitions();
+        unordered_map<char, vector<NFAstate *>> transitions = k->getTransitions();
         vector<NFAstate *> vec = transitions[a];
         for (auto &t: vec) {
             new_closure.insert(t);
