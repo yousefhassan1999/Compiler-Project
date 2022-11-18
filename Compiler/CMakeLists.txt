@@ -16,4 +16,4 @@ add_executable(Compiler
         src/lexicalAnalysis/nfa.h
         src/lexicalAnalysis/nfa.cpp
         src/lexicalAnalysis/nfaPostfix.h
-        src/lexicalAnalysis/nfaPostfix.cpp)
+        src/lexicalAnalysis/nfaPostfix.cpp src/lexicalAnalysis/dfa_minimization/DFA.cpp src/lexicalAnalysis/dfa_minimization/DFA.h src/lexicalAnalysis/dfa_minimization/DFAMinimizer.cpp src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h)
