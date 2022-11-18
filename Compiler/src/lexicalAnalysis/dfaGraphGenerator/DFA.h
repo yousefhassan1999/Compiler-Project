@@ -2,7 +2,7 @@
 // Created by Ahmed on 11/18/2022.
 //
 
-#ifndef COMPILER_VECTORDFA_H
+#ifndef COMPILER_DFA_H
 #define COMPILER_DFA_H
 
 #include <iostream>

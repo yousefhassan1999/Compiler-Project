@@ -16,8 +16,11 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
         unordered_map<char, vector<NFAstate*>> transitions = k->GetTransitions();
         vector<NFAstate *> vec = transitions[' '];
         for (auto &t: vec) {
-            closure->insert(t);
-            stack.push(t);
+            bool is_in = closure->find(t) != closure->end();
+            if(!is_in){
+                closure->insert(t);
+                stack.push(t);
+            }
         }
     }
 }

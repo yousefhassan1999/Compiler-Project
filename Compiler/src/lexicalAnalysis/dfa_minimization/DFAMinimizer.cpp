@@ -12,7 +12,7 @@ vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
     // divide into final and non-final groups
     vector<int> group(nStates);
     for (int i = 0; i < nStates; ++i) {
-        group[i] = dfa->getStateInfo(i).acceptance;
+        group[i] = dfa->getStateInfo(i)->acceptance;
     }
 
     removeDeadStates();
@@ -97,9 +97,9 @@ vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
         }
         // Check for acceptance state within the group
         for (auto s : g) {
-            StateInfo info = dfa->getStateInfo(s);
-            if(info.acceptance) {
-                minDFA->addAcceptanceState(newState, info.tokenName, info.tokenLexema);
+            StateInfo* info = dfa->getStateInfo(s);
+            if(info->acceptance) {
+                minDFA->addAcceptanceState(newState, info->tokenName, info->tokenLexema);
                 break;
             }
         }
