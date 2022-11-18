@@ -13,7 +13,6 @@
 
 class DFA {
 private:
-    vector<PostfixContainer> *rules;
 
     NFAstate *start;
 
@@ -23,7 +22,7 @@ private:
 
     static unordered_set<NFAstate *> move(unordered_set<NFAstate *> closure, char a);
 
-    void create_inputs();
+    void create_inputs(vector<PostfixContainer> *rules);
 
 public:
 
@@ -31,9 +30,8 @@ public:
     vector<DFAstate *> build_DFA();
 
     DFA(vector<PostfixContainer> *rules, NFAstate *start) {
-        this->rules = rules;
         this->start = start;
-        create_inputs();
+        create_inputs(rules);
     }
 
 

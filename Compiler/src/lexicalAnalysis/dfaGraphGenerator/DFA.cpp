@@ -37,7 +37,7 @@ unordered_set<NFAstate*> DFA::move(unordered_set<NFAstate*> closure, char a) {
 }
 
 
-void DFA::create_inputs(){
+void DFA::create_inputs(vector<PostfixContainer> *rules){
     for (auto &it: *rules) {
         for (int i = 0 ; i < it.getPostFix().length() ; i++) {
             char ch = it.getPostFix()[i];
