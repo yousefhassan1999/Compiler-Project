@@ -7,7 +7,7 @@
 #define EPSILON ' '
 using namespace std;
 
-NFAstate *NFAGenerator::generateNFA() {
+NFAstate *NFAGenerator::generateNFA(LexicalRules *lexicalRules) {
     stack<NFAStackNode *> nfaStack;
     for (auto rule: lexicalRules->getRules()) {
         for (auto ch: rule.getPostFix()) {
@@ -39,7 +39,7 @@ void NFAGenerator::setNFARoot(NFAStackNode *nfaStackNode) {
 }
 
 NFAStackNode *NFAGenerator::generateOrNFA(NFAStackNode *first, NFAStackNode *second) {
-    auto *generatedNFA = new NFAStackNode(new NFAstate(), new NFAstate());
+    auto generatedNFA = generateNewNFAStackNode();
     generatedNFA->getStartState()->SetAddTransitions(EPSILON, first->getStartState());
     generatedNFA->getStartState()->SetAddTransitions(EPSILON, second->getStartState());
     first->getEndState()->SetAddTransitions(EPSILON, generatedNFA->getEndState());
@@ -58,7 +58,7 @@ void NFAGenerator::applyOr(std::stack<NFAStackNode *> *nfaStack) {
 }
 
 NFAStackNode *NFAGenerator::generateBaseNFA(char key) {
-    auto *generatedNFA = new NFAStackNode(new NFAstate(), new NFAstate());
+    auto generatedNFA = generateNewNFAStackNode();
     generatedNFA->getEndState()->setTokenLexema(string(1, key));
     generatedNFA->getStartState()->SetAddTransitions(key, generatedNFA->getEndState());
     return generatedNFA;
@@ -74,7 +74,7 @@ void NFAGenerator::applyZeroOrMore(NFAStackNode *current) {
 }
 
 NFAStackNode *NFAGenerator::generateAndNFA(NFAStackNode *first, NFAStackNode *second) {
-    auto *generatedNFA = new NFAStackNode(new NFAstate(), new NFAstate());
+    auto generatedNFA = generateNewNFAStackNode();
     generatedNFA->getStartState()->SetAddTransitions(EPSILON, first->getStartState());
     first->getEndState()->SetAddTransitions(EPSILON, second->getStartState());
     second->getEndState()->SetAddTransitions(EPSILON, generatedNFA->getEndState());
@@ -95,4 +95,11 @@ void NFAGenerator::acceptNFA(NFAStackNode *current, std::string tokenName) {
     NFAstate *endState = current->getEndState();
     endState->setAcceptance(true);
     endState->setTokenName(std::move(tokenName));
+}
+
+NFAStackNode *NFAGenerator::generateNewNFAStackNode() {
+    auto generatedNFA = new NFAStackNode(new NFAstate(), new NFAstate());
+    internalNFAStates.insert(generatedNFA->getStartState());
+    internalNFAStates.insert(generatedNFA->getEndState());
+    return generatedNFA;
 }
