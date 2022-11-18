@@ -106,6 +106,5 @@ vector<DFAstate *> DFA::build_DFA(){
             }
         }
     }
-
-
+    return states;
 }

@@ -9,7 +9,7 @@ using namespace std;
 
 NFAstate *NFAGenerator::generateNFA() {
     stack<NFAStackNode *> nfaStack;
-    for (auto rule: lexicalRules->getRules()) {
+    for (auto rule: *lexicalRules->getRules()) {
         for (auto ch: rule.getPostFix()) {
             if (ch == '|') {
                 applyOr(&nfaStack);

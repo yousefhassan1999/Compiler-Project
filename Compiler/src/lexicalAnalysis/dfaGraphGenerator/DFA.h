@@ -11,28 +11,29 @@
 #include "src/lexicalAnalysis/shared/DFAstate.h"
 #include "src/lexicalAnalysis/shared/PostfixContainer.h"
 
-using namespace std;
-
 class DFA {
 private:
     vector<PostfixContainer> *rules;
 
-    static NFAstate *start;
+    NFAstate *start;
+
+    set<char> chars;
 
     static void epsilonClosure(unordered_set<NFAstate *> *closure);
 
     static unordered_set<NFAstate *> move(unordered_set<NFAstate *> closure, char a);
 
-public:
-    static set<char> chars;
-
-    static vector<DFAstate *> build_DFA();
-
     void create_inputs();
 
-    DFA(vector<PostfixContainer> *rules,NFAstate *start){
+public:
+
+
+    vector<DFAstate *> build_DFA();
+
+    DFA(vector<PostfixContainer> *rules, NFAstate *start) {
         this->rules = rules;
         this->start = start;
+        create_inputs();
     }
 
 
