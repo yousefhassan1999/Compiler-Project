@@ -14,17 +14,28 @@
 using namespace std;
 
 class DFA {
-public:
-    set<char> chars;
-
-    static vector<DFAstate *> build_DFA(NFAstate start, vector<char> inputs);
-
-    void create_inputs(vector<PostfixContainer> rules);
-
 private:
+    vector<PostfixContainer> *rules;
+
+    static NFAstate *start;
+
     static void epsilonClosure(unordered_set<NFAstate *> *closure);
 
     static unordered_set<NFAstate *> move(unordered_set<NFAstate *> closure, char a);
+
+public:
+    static set<char> chars;
+
+    static vector<DFAstate *> build_DFA();
+
+    void create_inputs();
+
+    DFA(vector<PostfixContainer> *rules,NFAstate *start){
+        this->rules = rules;
+        this->start = start;
+    }
+
+
 };
 
 

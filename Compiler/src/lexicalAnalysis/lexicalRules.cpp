@@ -221,8 +221,8 @@ string LexicalRules::specialConvertToPostfix(string basicString) {
     return newValue;
 }
 
-vector<PostfixContainer> &LexicalRules::getRules() {
-    return rules;
+vector<PostfixContainer>* LexicalRules::getRules() {
+    return &rules;
 }
 
 

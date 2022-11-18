@@ -16,7 +16,7 @@ class LexicalRules {
 public:
     void readFileContent(const std::string& Path);
 
-    std::vector<PostfixContainer> &getRules();
+    std::vector<PostfixContainer>* getRules();
 
 private:
     bool checkRegularDefinition(std::string LR);

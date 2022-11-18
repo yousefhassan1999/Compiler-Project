@@ -13,7 +13,7 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
     while (!stack.empty()) {
         auto k = stack.top();
         stack.pop();
-        unordered_map<char, vector<NFAstate *>> transitions = k->GetTransitions();
+        unordered_map<char, vector<NFAstate*>> transitions = k->GetTransitions();
         vector<NFAstate *> vec = transitions[' '];
         for (auto &t: vec) {
             closure->insert(t);
@@ -24,7 +24,7 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
 
 
 
-unordered_set<NFAstate *> DFA::move(unordered_set<NFAstate*> closure, char a) {
+unordered_set<NFAstate*> DFA::move(unordered_set<NFAstate*> closure, char a) {
     unordered_set<NFAstate *> new_closure;
     for (auto k: closure) {
         unordered_map<char, vector<NFAstate *>> transitions = k->GetTransitions();
@@ -37,8 +37,8 @@ unordered_set<NFAstate *> DFA::move(unordered_set<NFAstate*> closure, char a) {
 }
 
 
-void DFA::create_inputs(vector<PostfixContainer> rules){
-    for (auto &it: rules) {
+void DFA::create_inputs(){
+    for (auto &it: *rules) {
         for (int i = 0 ; i < it.getPostFix().length() ; i++) {
             char ch = it.getPostFix()[i];
             if(ch !='|' && ch!='*' && ch!='+' && ch!=' ' ){
@@ -59,10 +59,10 @@ void DFA::create_inputs(vector<PostfixContainer> rules){
 }
 
 
-vector<DFAstate *> DFA::build_DFA(NFAstate start,vector<char> inputs){
+vector<DFAstate *> DFA::build_DFA(){
     vector<DFAstate *> states;
     auto *first = new DFAstate();;
-    first->closure.insert(&start);
+    first->closure.insert(start);
     epsilonClosure(&first->closure);
 
     for (auto &c: first->closure) {
@@ -79,8 +79,8 @@ vector<DFAstate *> DFA::build_DFA(NFAstate start,vector<char> inputs){
         } else {
             continue;
         }
-        for (char a: inputs) {
-            unordered_set<NFAstate*> new_closure = move(states[i]->closure, a);
+        for (set<char>::iterator a = chars.begin();a != chars.end(); a++){
+            unordered_set<NFAstate*> new_closure = move(states[i]->closure, *a);
             auto *u = new DFAstate();
             u->closure = new_closure;
             if (u->closure.empty()) {
@@ -89,7 +89,7 @@ vector<DFAstate *> DFA::build_DFA(NFAstate start,vector<char> inputs){
             bool newItem = true;
             for (int d = 0; d < states.size(); d++) {
                 if (states[d]->closure == new_closure) {
-                    states[i]->transitions[a] = d;
+                    states[i]->transitions[*a] = d;
                     newItem = false;
                     break;
                 }
@@ -102,7 +102,7 @@ vector<DFAstate *> DFA::build_DFA(NFAstate start,vector<char> inputs){
                     }
                 }
                 states.push_back(u);
-                states[i]->transitions[a] = (states.size() - 1);
+                states[i]->transitions[*a] = (states.size() - 1);
             }
         }
     }
