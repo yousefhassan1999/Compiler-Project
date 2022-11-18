@@ -34,7 +34,7 @@ bool LexicalRules::checkPunctuations(string LR) {
         while (ss >> word) {
             string value(word);
             value = specialConvertToPostfix(value);
-            postfixContainer newNFAPostfix;
+            PostfixContainer newNFAPostfix;
             newNFAPostfix.setTokenName("Punctuations");
             newNFAPostfix.setPostFix(value);
             rules.push_back(newNFAPostfix);
@@ -53,7 +53,7 @@ bool LexicalRules::checkKeyWords(string LR) {
         while (ss >> word) {
             string value(word);
             value = specialConvertToPostfix(value);
-            postfixContainer newNFAPostfix;
+            PostfixContainer newNFAPostfix;
             newNFAPostfix.setTokenName("Keyword");
             newNFAPostfix.setPostFix(value);
             rules.push_back(newNFAPostfix);
@@ -93,7 +93,7 @@ void LexicalRules::updateRegularExpressions() {
         Value = addSeparator(Value);
         Value = convertToPostfix(Value);
 
-        postfixContainer newNFAPostfix;
+        PostfixContainer newNFAPostfix;
         newNFAPostfix.setTokenName(Key);
         newNFAPostfix.setPostFix(Value);
         rules.push_back(newNFAPostfix);
@@ -221,8 +221,8 @@ string LexicalRules::specialConvertToPostfix(string basicString) {
     return newValue;
 }
 
-vector<postfixContainer> &LexicalRules::getRules() {
-    return rules;
+vector<PostfixContainer>* LexicalRules::getRules() {
+    return &rules;
 }
 
 

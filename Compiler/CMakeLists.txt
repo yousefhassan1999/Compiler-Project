@@ -16,4 +16,8 @@ add_executable(Compiler
         src/lexicalAnalysis/nfaGraphGenerator/NFAStackNode.h
         src/lexicalAnalysis/nfaGraphGenerator/NFAStackNode.cpp
         src/lexicalAnalysis/shared/PostfixContainer.h
-        src/lexicalAnalysis/shared/PostfixContainer.cpp src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.cpp src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.h)
+        src/lexicalAnalysis/shared/PostfixContainer.cpp
+        src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.cpp
+        src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.h
+        src/lexicalAnalysis/dfaGraphGenerator/DFA.h
+        src/lexicalAnalysis/dfaGraphGenerator/DFA.cpp)

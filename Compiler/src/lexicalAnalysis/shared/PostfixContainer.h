@@ -3,7 +3,7 @@
 
 #include <string>
 
-class postfixContainer {
+class PostfixContainer {
 
     std::string tokenName;
     std::string postFix;
