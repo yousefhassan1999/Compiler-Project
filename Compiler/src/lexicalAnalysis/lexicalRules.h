@@ -11,12 +11,12 @@ class LexicalRules {
     std::map<std::string, std::string> RegularDefinitionsMap;
     std::vector<std::string> RegularExpressions;
     std::unordered_map<char, int> operatorPrecedence;
-    std::vector<postfixContainer> rules;
+    std::vector<PostfixContainer> rules;
 
 public:
     void readFileContent(const std::string& Path);
 
-    std::vector<postfixContainer> &getRules();
+    std::vector<PostfixContainer> &getRules();
 
 private:
     bool checkRegularDefinition(std::string LR);

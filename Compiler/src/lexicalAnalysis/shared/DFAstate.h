@@ -2,8 +2,8 @@
 // Created by Ahmed on 11/18/2022.
 //
 
-#ifndef COMPILER_DFASTATE_H
-#define COMPILER_DFASTATE_H
+#ifndef COMPILER_DFA_STATE_H
+#define COMPILER_DFA_STATE_H
 #include <iostream>
 #include <map>
 #include <bits/stdc++.h>
@@ -13,16 +13,16 @@ class DFAstate
 {
 public:
     bool mark;
-    bool Acceptence;
+    bool acceptance;
     string tokenName;
     string tokenLexema;
     unordered_set<NFAstate*> closure;
     unordered_map<char,int> transitions;
     DFAstate(){
         mark = false;
-        Acceptence=false;
+        acceptance=false;
         tokenLexema="";
         tokenName="";
     }
 };
-#endif //COMPILER_DFASTATE_H
+#endif //COMPILER_DFA_STATE_H

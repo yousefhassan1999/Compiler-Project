@@ -5,18 +5,18 @@
 using namespace std;
 
 
-void postfixContainer::setTokenName(string newTokenName) {
+void PostfixContainer::setTokenName(string newTokenName) {
     tokenName = std::move(newTokenName);
 }
 
-void postfixContainer::setPostFix(string newPostFix) {
+void PostfixContainer::setPostFix(string newPostFix) {
     postFix = std::move(newPostFix);
 }
 
-string &postfixContainer::getTokenName() {
+string &PostfixContainer::getTokenName() {
     return tokenName;
 }
 
-string &postfixContainer::getPostFix() {
+string &PostfixContainer::getPostFix() {
     return postFix;
 }
