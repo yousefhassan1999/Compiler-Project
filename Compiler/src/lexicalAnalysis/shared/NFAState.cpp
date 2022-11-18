@@ -17,7 +17,7 @@ void NFAstate::setAcceptance(bool b) {
     acceptance = b;
 }
 
-void NFAstate::SetAddTransitions(char key, NFAstate* s) {
+void NFAstate::SetAddTransitions(char key, NFAstate *s) {
     if (transitions.find(key) != transitions.end()) {
         transitions[key].push_back(s);
     } else {
@@ -39,7 +39,7 @@ string &NFAstate::getTokenLexema() {
     return tokenLexema;
 }
 
-unordered_map<char, std::vector<NFAstate *>> &NFAstate::GetTransitions() {
+unordered_map<char, std::vector<NFAstate *>> &NFAstate::getTransitions() {
     return transitions;
 }
 

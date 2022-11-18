@@ -8,7 +8,7 @@
 
 class NFAstate {
 
-    bool acceptance;
+    bool acceptance = false;
     std::string tokenName;
     std::string tokenLexema;
     std::unordered_map<char, std::vector<NFAstate *>> transitions;
@@ -20,7 +20,7 @@ public:
 
     void setAcceptance(bool b);
 
-    void SetAddTransitions(char key, NFAstate* s);
+    void SetAddTransitions(char key, NFAstate *s);
 
     bool &getAcceptance();
 
@@ -28,7 +28,7 @@ public:
 
     std::string &getTokenLexema();
 
-    std::unordered_map<char, std::vector<NFAstate *>> &GetTransitions();
+    std::unordered_map<char, std::vector<NFAstate *>> & getTransitions();
 
 private:
 
