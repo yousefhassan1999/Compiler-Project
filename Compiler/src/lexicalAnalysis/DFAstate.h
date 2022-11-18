@@ -17,7 +17,7 @@ public:
     string tokenName;
     string tokenLexema;
     unordered_set<NFAstate*> closure;
-    unordered_map<char,DFAstate*> transitions;
+    unordered_map<char,int> transitions;
     DFAstate(){
         mark = false;
         Acceptence=false;

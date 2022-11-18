@@ -5,7 +5,7 @@
 #include "DFA.h"
 
 
-void epsilonClosure(unordered_set<NFAstate *> *closure) {
+void epsilonClosure(unordered_set<NFAstate*> *closure) {
     stack<NFAstate *> stack;
     for (auto k: *closure) {
         stack.push(k);
@@ -24,7 +24,7 @@ void epsilonClosure(unordered_set<NFAstate *> *closure) {
 
 
 
-unordered_set<NFAstate *> move(unordered_set<NFAstate *> closure, char a) {
+unordered_set<NFAstate *> move(unordered_set<NFAstate*> closure, char a) {
     unordered_set<NFAstate *> new_closure;
     for (auto k: closure) {
         unordered_map<char, vector<NFAstate *>> transitions = k->GetTransitions();
@@ -68,6 +68,7 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
     for (auto &c: first->closure) {
         if (c->getAcceptance() == true) {
             first->Acceptence = true;
+            first->tokenName = c->getTokenName();
             break;
         }
     }
@@ -79,7 +80,7 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
             continue;
         }
         for (char a: inputs) {
-            unordered_set<NFAstate *> new_closure = move(states[i]->closure, a);
+            unordered_set<NFAstate*> new_closure = move(states[i]->closure, a);
             DFAstate *u = new DFAstate();
             u->closure = new_closure;
             if (u->closure.size() == 0) {
@@ -88,7 +89,7 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
             bool newItem = true;
             for (int d = 0; d < states.size(); d++) {
                 if (states[d]->closure == new_closure) {
-                    states[i]->transitions[a] = states[d];
+                    states[i]->transitions[a] = d;
                     newItem = false;
                     break;
                 }
@@ -101,9 +102,10 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
                     }
                 }
                 states.push_back(u);
-                states[i]->transitions[a] = states[states.size() - 1];
+                states[i]->transitions[a] = (states.size() - 1);
             }
         }
     }
+
 
 }
