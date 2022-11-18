@@ -24,6 +24,7 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
 
 
 
+
 unordered_set<NFAstate*> DFA::move(unordered_set<NFAstate*> closure, char a) {
     unordered_set<NFAstate *> new_closure;
     for (auto k: closure) {
