@@ -81,6 +81,7 @@ vector<DFAstate *> DFA::build_DFA(){
         }
         for (set<char>::iterator a = chars.begin();a != chars.end(); a++){
             unordered_set<NFAstate*> new_closure = move(states[i]->closure, *a);
+            epsilonClosure(&new_closure);
             auto *u = new DFAstate();
             u->closure = new_closure;
             if (u->closure.empty()) {
