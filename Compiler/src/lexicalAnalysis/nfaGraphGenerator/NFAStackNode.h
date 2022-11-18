@@ -1,16 +1,16 @@
 #ifndef NFA_H_INCLUDED
 #define NFA_H_INCLUDED
 
-#include "nfaState.h"
+#include "src/lexicalAnalysis/shared/NFAState.h"
 
 
-class NFA {
+class NFAStackNode {
 private:
     NFAstate *startState;
     NFAstate *endState;
 
 public:
-    NFA(NFAstate *startState, NFAstate *endState);
+    NFAStackNode(NFAstate *startState, NFAstate *endState);
 
     NFAstate *getStartState();
 
