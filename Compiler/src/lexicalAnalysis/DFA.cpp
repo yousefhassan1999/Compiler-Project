@@ -3,6 +3,8 @@
 //
 
 #include "DFA.h"
+
+
 void epsilonClosure(unordered_set<NFAstate *> *closure) {
     stack<NFAstate *> stack;
     for (auto k: *closure) {
@@ -34,6 +36,27 @@ unordered_set<NFAstate *> move(unordered_set<NFAstate *> closure, char a) {
     return new_closure;
 }
 
+
+void DFA::create_inputs(vector<NFAPostfix> rules){
+    for (auto &it: rules) {
+        for (int i = 0 ; i < it.getPostFix().length() ; i++) {
+            char ch = it.getPostFix()[i];
+            if(ch !='|' && ch!='*' && ch!='+' && ch!=' ' ){
+                chars.insert(ch);
+            }else{
+                for(int j = i-1 ; j >-1 ; j--){
+                    if(it.getPostFix()[j]!=' ' ){
+                        if(it.getPostFix()[j] == '\\'){
+                            chars.insert(ch);
+                        }
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+}
 
 
 vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
@@ -71,7 +94,6 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
                 }
             }
             if (newItem) {
-                string s = "";
                 for (auto &c: u->closure) {
                     if (c->getAcceptance() == true) {
                         u->Acceptence = true;
@@ -80,7 +102,6 @@ vector<DFAstate *> build_DFA(NFAstate start,vector<char> inputs){
                 }
                 states.push_back(u);
                 states[i]->transitions[a] = states[states.size() - 1];
-                DFAstate *ddd = states[i]->transitions[a];
             }
         }
     }
