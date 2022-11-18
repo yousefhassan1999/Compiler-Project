@@ -39,6 +39,7 @@ private:
 
     std::string convertToPostfix(std::string basicString);
 
+    std::string specialConvertToPostfix(std::string basicString);
 };
 
 #endif // LEXICAL_RULES_H_INCLUDED
