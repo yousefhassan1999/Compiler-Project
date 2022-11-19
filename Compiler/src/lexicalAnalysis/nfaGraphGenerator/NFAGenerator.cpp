@@ -12,13 +12,13 @@ NFAstate *NFAGenerator::generateNFA(LexicalRules *lexicalRules) {
     for (auto rule: *lexicalRules->getRules()) {
         char last = 0;
         for (auto ch: rule.getPostFix()) {
-            if (last!= '\\' && ch == '|') {
+            if (ch == '|') {
                 applyOr(&nfaStack);
             } else if (last!= '\\' && ch == '*') {
                 applyZeroOrMore(nfaStack.top());
             } else if (last!= '\\' && ch == '+') {
                 applyOneOrMore(nfaStack.top());
-            } else if (last!= '\\' && ch == ' ') {
+            } else if (ch == ' ') {
                 applyAnd(&nfaStack);
             } else {
                 nfaStack.push(generateBaseNFA(ch));
