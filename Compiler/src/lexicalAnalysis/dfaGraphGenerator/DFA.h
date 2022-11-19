@@ -38,4 +38,4 @@ public:
 };
 
 
-#endif //COMPILER_VECTORDFA_H
+#endif //COMPILER_DFA_H

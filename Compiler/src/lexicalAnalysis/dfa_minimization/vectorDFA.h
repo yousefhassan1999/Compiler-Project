@@ -1,5 +1,5 @@
-#ifndef COMPILER_VECTORDFA_H
-#define COMPILER_VECTORDFA_H
+#ifndef COMPILER_VECTOR_DFA_H
+#define COMPILER_VECTOR_DFA_H
 
 #include "src/lexicalAnalysis/dfaGraphGenerator/DFA.h"
 
@@ -39,16 +39,16 @@ public:
 class vectorDFA {
 private:
     vector<unordered_map<char, toState>> transitionTable;
-    vector<StateInfo*> states;
+    vector<StateInfo *> states;
 public:
     vectorDFA(int nStates);
-    vectorDFA(vector<DFAstate *> *dfaVec);
+    vectorDFA(vector<DFAstate *> &dfaVec);
 
     vector<unordered_map<char, toState>> &getTransitionTable();
     StateInfo* getStateInfo(int state);
     void addTransition(int start, char input, int end);
-    void addAcceptanceState(int state, string tokenName, string tokenLexema);
+    void addStateInfo(int state, bool acceptance, string tokenName, string tokenLexema);
     int nextState(int currentState, char input);
 };
 
-#endif //COMPILER_VECTORDFA_H
+#endif //COMPILER_VECTOR_DFA_H

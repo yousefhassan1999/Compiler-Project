@@ -98,10 +98,7 @@ vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
         // Check for acceptance state within the group
         for (auto s : g) {
             StateInfo* info = dfa->getStateInfo(s);
-            if(info->acceptance) {
-                minDFA->addAcceptanceState(newState, info->tokenName, info->tokenLexema);
-                break;
-            }
+            minDFA->addStateInfo(newState, info->acceptance, info->tokenName, info->tokenLexema);
         }
     }
 
