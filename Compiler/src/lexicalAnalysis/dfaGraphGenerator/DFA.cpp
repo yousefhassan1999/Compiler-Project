@@ -16,8 +16,11 @@ void DFA::epsilonClosure(unordered_set<NFAstate*> *closure) {
         unordered_map<char, vector<NFAstate*>> transitions = k->getTransitions();
         vector<NFAstate *> vec = transitions[' '];
         for (auto &t: vec) {
-            closure->insert(t);
-            stack.push(t);
+            bool is_in = closure->find(t) != closure->end();
+            if(!is_in){
+                closure->insert(t);
+                stack.push(t);
+            }
         }
     }
 }
@@ -66,11 +69,20 @@ vector<DFAstate *> DFA::build_DFA(){
     first->closure.insert(start);
     epsilonClosure(&first->closure);
 
+    unordered_set<string> pri;
     for (auto &c: first->closure) {
         if (c->getAcceptance()) {
             first->acceptance = true;
-            first->tokenName = c->getTokenName();
-            break;
+            pri.insert(c->getTokenName());
+        }
+    }
+    if(!pri.empty()){
+        if(pri.find("Keyword") != pri.end()){
+            first->tokenName = "Keyword";
+        }else if(pri.find("Punctuations") != pri.end()){
+            first->tokenName = "Punctuations";
+        }else{
+            first->tokenName = *pri.begin();
         }
     }
     states.push_back(first);
@@ -91,20 +103,30 @@ vector<DFAstate *> DFA::build_DFA(){
             bool newItem = true;
             for (int d = 0; d < states.size(); d++) {
                 if (states[d]->closure == new_closure) {
-                    states[i]->transitions[*a] = d;
+                    states[i]->transitions[*a] = toState(d);
                     newItem = false;
                     break;
                 }
             }
             if (newItem) {
+                unordered_set<string> pri;
                 for (auto &c: u->closure) {
                     if (c->getAcceptance()) {
                         u->acceptance = true;
-                        break;
+                        pri.insert(c->getTokenName());
+                    }
+                }
+                if(!pri.empty()){
+                    if(pri.find("Keyword") != pri.end()){
+                        u->tokenName = "Keyword";
+                    }else if(pri.find("Punctuations") != pri.end()){
+                        u->tokenName = "Punctuations";
+                    }else{
+                        u->tokenName = *pri.begin();
                     }
                 }
                 states.push_back(u);
-                states[i]->transitions[*a] = (states.size() - 1);
+                states[i]->transitions[*a] = toState(states.size() - 1);
             }
         }
     }

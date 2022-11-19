@@ -20,4 +20,8 @@ add_executable(Compiler
         src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.cpp
         src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.h
         src/lexicalAnalysis/dfaGraphGenerator/DFA.h
-        src/lexicalAnalysis/dfaGraphGenerator/DFA.cpp)
+        src/lexicalAnalysis/dfaGraphGenerator/DFA.cpp
+        src/lexicalAnalysis/dfa_minimization/vectorDFA.cpp
+        src/lexicalAnalysis/dfa_minimization/vectorDFA.h
+        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.cpp
+        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h)

@@ -9,6 +9,19 @@
 #include <bits/stdc++.h>
 #include "nfaState.h"
 using namespace std;
+
+struct toState
+{
+    int next = -1;
+    toState() = default;
+    explicit toState (int next){
+        this->next = next;
+    }
+    int get() const {
+        return this->next;
+    }
+};
+
 class DFAstate
 {
 public:
@@ -17,7 +30,7 @@ public:
     string tokenName;
     string tokenLexema;
     unordered_set<NFAstate*> closure;
-    unordered_map<char,int> transitions;
+    unordered_map<char, toState> transitions;
     DFAstate(){
         mark = false;
         acceptance=false;
