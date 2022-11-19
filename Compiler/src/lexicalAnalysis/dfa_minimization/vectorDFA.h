@@ -41,8 +41,8 @@ private:
     vector<unordered_map<char, toState>> transitionTable;
     vector<StateInfo *> states;
 public:
-    vectorDFA(int nStates);
-    vectorDFA(vector<DFAstate *> &dfaVec);
+    explicit vectorDFA(int nStates);
+    explicit vectorDFA(vector<DFAstate *> &dfaVec);
 
     vector<unordered_map<char, toState>> &getTransitionTable();
     StateInfo* getStateInfo(int state);

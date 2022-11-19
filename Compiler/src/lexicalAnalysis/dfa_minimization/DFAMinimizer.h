@@ -6,11 +6,11 @@
 class DFAMinimizer {
 private:
     vector<int> findEquivalence(vectorDFA *dfa);
-    vector<vector<int>> groupsList(vector<int> &group, int nGroups);
-    vectorDFA* mergeGroups(vector<int> &group, vectorDFA *dfa);
+    static vector<vector<int>> groupsList(vector<int> &group, int nGroups);
+    static vectorDFA* mergeGroups(vector<int> &group, vectorDFA *dfa);
     void removeDeadStates();
-    int countGroups(vector<int> &group);
-    bool equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa);
+    static int countGroups(vector<int> &group);
+    static bool equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa);
 public:
     vectorDFA* minimize(vectorDFA *dfa);
 };

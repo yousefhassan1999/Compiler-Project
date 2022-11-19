@@ -86,7 +86,7 @@ bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa
 
 vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
     int nGroup = countGroups(group);
-    vectorDFA *minDFA = new vectorDFA(nGroup);
+    auto *minDFA = new vectorDFA(nGroup);
     vector<vector<int>> groups_list = groupsList(group, countGroups(group));
 
     for(auto g : groups_list) {
