@@ -64,7 +64,7 @@ bool LexicalRules::checkKeyWords(string LR) {
 }
 
 bool LexicalRules::checkRegularDefinition(string LR) {
-    regex str_expr1("([a-zA-Z][a-zA-Z0-9]* = .*)");    //.*[^(\:( )*)|(\\( )*)]( )*=.*
+    regex str_expr1("([a-zA-Z][a-zA-Z0-9]*( )*=.*)");    //.*[^(\:( )*)|(\\( )*)]( )*=.*
     if (regex_match(LR, str_expr1)) {
         LR.erase(std::remove_if(LR.begin(), LR.end(), ::isspace), LR.end());
         string newLR = updateMinus(LR);

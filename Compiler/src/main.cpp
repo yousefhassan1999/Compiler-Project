@@ -31,7 +31,7 @@ int main() {
     ob.getLexicalRules()->readFileContent(".././lexical rules.txt");
     NFAGenerator nfaGenerator(ob.getLexicalRules());
 
-    DFA dfa(ob.getLexicalRules()->getRules(), nfaGenerator.generateNFA());
+    DFA dfa(ob.getLexicalRules()->getRules(), nfaGenerator.getNFARoot());
     vector<DFAstate *> dfaVec = dfa.build_DFA();
 
     vectorDFA vecDFA(dfaVec);

@@ -8,6 +8,8 @@
 
 #include <utility>
 #include <stack>
+#include <iostream>
+#include <unordered_set>
 
 #include "src/lexicalAnalysis/lexicalRules.h"
 #include "src/lexicalAnalysis/shared/NFAState.h"
@@ -15,35 +17,46 @@
 
 class NFAGenerator {
 private:
-    LexicalRules *lexicalRules;
-    NFAstate *nfaRoot{};
+    NFAstate *nfaRoot;
+    std::unordered_set<NFAstate *> internalNFAStates;
 public:
     explicit NFAGenerator(LexicalRules *lexicalRules) {
-        this->lexicalRules = lexicalRules;
+        this->nfaRoot = nullptr;
+        generateNFA(lexicalRules);
     }
 
-    NFAstate *generateNFA();
+    ~NFAGenerator() {
+        std::cout << "start deleting NFA graph ...." << std::endl;
+        for (auto state : internalNFAStates){
+            delete state;
+        }
+        std::cout << "NFA graph deleted -_-!" << std::endl;
+    }
 
     NFAstate *getNFARoot() {
         return nfaRoot;
     }
 
 private:
+    NFAstate *generateNFA(LexicalRules *lexicalRules);
+
     void setNFARoot(NFAStackNode *nfaStackNode);
 
-    static NFAStackNode *generateOrNFA(NFAStackNode *first, NFAStackNode *second);
+    NFAStackNode *generateOrNFA(NFAStackNode *first, NFAStackNode *second);
 
-    static void applyOr(std::stack<NFAStackNode *> *nfaStack);
+    void applyOr(std::stack<NFAStackNode *> *nfaStack);
 
-    static NFAStackNode *generateBaseNFA(char key);
+    NFAStackNode *generateBaseNFA(char key);
 
-    static void applyOneOrMore(NFAStackNode *current);
+    NFAStackNode *generateNewNFAStackNode();
 
-    static void applyZeroOrMore(NFAStackNode *current);
+    void applyOneOrMore(NFAStackNode *current);
 
-    static NFAStackNode *generateAndNFA(NFAStackNode *first, NFAStackNode *second);
+    void applyZeroOrMore(NFAStackNode *current);
 
-    static void applyAnd(std::stack<NFAStackNode *> *nfaStack);
+    NFAStackNode *generateAndNFA(NFAStackNode *first, NFAStackNode *second);
+
+    void applyAnd(std::stack<NFAStackNode *> *nfaStack);
 
     static void acceptNFA(NFAStackNode *current, std::string tokenName);
 
