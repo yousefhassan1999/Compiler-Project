@@ -103,6 +103,7 @@ vector<DFAstate *> DFA::build_DFA(){
                 for (auto &c: u->closure) {
                     if (c->getAcceptance()) {
                         u->acceptance = true;
+                        u->tokenName = c->getTokenName();
                         break;
                     }
                 }

@@ -6,6 +6,24 @@
 
 using namespace std;
 
+void test(vectorDFA *dfa) {
+    string input;
+    printf("Enter your input:\n");
+    do {
+        int state = 0;
+        cin >> input;
+        for (char i : input) {
+            state = dfa->nextState(state, i);
+            if (state == -1) {
+                printf("Invalid input!\n");
+                break;
+            }
+        }
+        if(state != -1)
+            printf("%d %s\n", dfa->getStateInfo(state)->acceptance, dfa->getStateInfo(state)->tokenName.c_str());
+    }while(!input.empty());
+}
+
 int main() {
     LexicalGenerator ob;
     DFAMinimizer minimizer;
@@ -19,6 +37,7 @@ int main() {
     vectorDFA vecDFA(dfaVec);
     vectorDFA *minimizedDFA = minimizer.minimize(&vecDFA);
 
-    printf("%zu", minimizedDFA->getTransitionTable().size());
+    printf("Original: %zu,  Minimized: %zu\n", dfaVec.size(), minimizedDFA->getTransitionTable().size());
+    test(minimizedDFA);
     return 0;
 }

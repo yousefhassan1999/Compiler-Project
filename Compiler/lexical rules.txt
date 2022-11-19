@@ -1,2 +1,2 @@
 digit = 0-2
-id : digit
+digits : digit+
