@@ -50,9 +50,9 @@ private:
 
     NFAStackNode *generateNewNFAStackNode();
 
-    void applyOneOrMore(NFAStackNode *current);
+    static void applyOneOrMore(NFAStackNode *current);
 
-    void applyZeroOrMore(NFAStackNode *current);
+    static void applyZeroOrMore(NFAStackNode *current);
 
     NFAStackNode *generateAndNFA(NFAStackNode *first, NFAStackNode *second);
 

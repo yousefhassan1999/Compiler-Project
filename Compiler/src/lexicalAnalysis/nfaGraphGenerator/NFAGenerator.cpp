@@ -10,18 +10,20 @@ using namespace std;
 NFAstate *NFAGenerator::generateNFA(LexicalRules *lexicalRules) {
     stack<NFAStackNode *> nfaStack;
     for (auto rule: *lexicalRules->getRules()) {
+        char last = 0;
         for (auto ch: rule.getPostFix()) {
-            if (ch == '|') {
+            if (last!= '\\' && ch == '|') {
                 applyOr(&nfaStack);
-            } else if (ch == '*') {
+            } else if (last!= '\\' && ch == '*') {
                 applyZeroOrMore(nfaStack.top());
-            } else if (ch == '+') {
+            } else if (last!= '\\' && ch == '+') {
                 applyOneOrMore(nfaStack.top());
-            } else if (ch == ' ') {
+            } else if (last!= '\\' && ch == ' ') {
                 applyAnd(&nfaStack);
             } else {
                 nfaStack.push(generateBaseNFA(ch));
             }
+            last = ch;
         }
         acceptNFA(nfaStack.top(), rule.getTokenName());
         if (nfaStack.size() == 2) {
