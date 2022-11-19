@@ -4,19 +4,20 @@
 
 vectorDFA::vectorDFA(int nStates) {
     this->transitionTable = vector<unordered_map<char, toState>>(nStates);
-    this->states = vector<StateInfo*>(nStates);
+    this->states = vector<StateInfo>(nStates);
 }
 
 vectorDFA::vectorDFA(vector<DFAstate *> &dfaVec) {
     size_t nStates = dfaVec.size();
     this->transitionTable = vector<unordered_map<char, toState>>(nStates);
-    this->states = vector<StateInfo*>(nStates);
+    this->states = vector<StateInfo>(nStates);
 
     for (int i = 0; i < nStates; ++i) {
         DFAstate *state = dfaVec[i];
-        this->addStateInfo(i, state->acceptance, state->tokenName, state->tokenLexema);
+        if(state->acceptance)
+            addAcceptanceState(i, state->tokenName, state->tokenLexema);
         for (auto &edge : state->transitions) {
-            this->addTransition(i, edge.first, edge.second);
+            this->addTransition(i, edge.first, edge.second.get());
         }
     }
 }
@@ -29,15 +30,14 @@ void vectorDFA::addTransition(int start, char input, int end) {
     this->transitionTable[start][input] = toState(end);
 }
 
-void vectorDFA::addStateInfo(int state, bool acceptance, string tokenName, string tokenLexema) {
-    if(acceptance)
-        this->states[state] = new StateInfo(std::move(tokenName), std::move(tokenLexema));
-    else
-        this->states[state] = new StateInfo();
+void vectorDFA::addAcceptanceState(int state, string &tokenName, string &tokenLexema) {
+    states[state].acceptance = true;
+    states[state].tokenName = tokenName;
+    states[state].tokenLexema = tokenLexema;
 }
 
-StateInfo* vectorDFA::getStateInfo(int state) {
-    return this->states[state];
+StateInfo &vectorDFA::getStateInfo(int state) {
+    return states[state];
 }
 
 int vectorDFA::nextState(int currentState, char input) {

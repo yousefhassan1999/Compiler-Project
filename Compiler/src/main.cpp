@@ -20,7 +20,7 @@ void test(vectorDFA *dfa) {
             }
         }
         if(state != -1)
-            printf("%d %s\n", dfa->getStateInfo(state)->acceptance, dfa->getStateInfo(state)->tokenName.c_str());
+            printf("state %d: %d %s\n", state, dfa->getStateInfo(state).acceptance, dfa->getStateInfo(state).tokenName.c_str());
     }while(!input.empty());
 }
 
@@ -29,15 +29,17 @@ int main() {
     DFAMinimizer minimizer;
 
     ob.getLexicalRules()->readFileContent(".././lexical rules.txt");
-    NFAGenerator nfaGenerator(ob.getLexicalRules());
+    auto *nfaGenerator = new NFAGenerator(ob.getLexicalRules());
 
-    DFA dfa(ob.getLexicalRules()->getRules(), nfaGenerator.getNFARoot());
+    DFA dfa(ob.getLexicalRules()->getRules(), nfaGenerator->getNFARoot());
     vector<DFAstate *> dfaVec = dfa.build_DFA();
+    delete nfaGenerator;
 
     vectorDFA vecDFA(dfaVec);
     vectorDFA *minimizedDFA = minimizer.minimize(&vecDFA);
 
     printf("Original: %zu,  Minimized: %zu\n", dfaVec.size(), minimizedDFA->getTransitionTable().size());
+
     test(minimizedDFA);
     return 0;
 }

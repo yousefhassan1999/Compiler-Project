@@ -7,16 +7,8 @@ vectorDFA* DFAMinimizer::minimize(vectorDFA *dfa) {
 
 vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
     vector<unordered_map<char, toState>> &table = dfa->getTransitionTable();
-    size_t nStates = table.size();
-
-    // divide into final and non-final groups
-    vector<int> group(nStates);
-    for (int i = 0; i < nStates; ++i) {
-        group[i] = dfa->getStateInfo(i)->acceptance;
-    }
-
+    vector<int> group = assignGroups(dfa);
     removeDeadStates();
-
     int nGroups = countGroups(group), oldNGroups;
 
     do {
@@ -44,6 +36,27 @@ vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
             }
         }
     } while (nGroups != oldNGroups);
+
+    return group;
+}
+
+vector<int> DFAMinimizer::assignGroups(vectorDFA *dfa) {
+    size_t nStates = dfa->getTransitionTable().size();
+    vector<int> group(nStates);
+    int nGroups = 1;
+    unordered_map<string, int> groupIdx;
+
+    for (int i = 0; i < nStates; ++i) {
+        StateInfo &info = dfa->getStateInfo(i);
+        if(info.acceptance) {
+            if (groupIdx.count(info.tokenName) == 0)
+                groupIdx[info.tokenName] = nGroups++;
+            group[i] = groupIdx[info.tokenName];
+        }
+        else {
+            group[i] = 0;
+        }
+    }
 
     return group;
 }
@@ -97,8 +110,11 @@ vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
         }
         // Check for acceptance state within the group
         for (auto s : g) {
-            StateInfo* info = dfa->getStateInfo(s);
-            minDFA->addStateInfo(newState, info->acceptance, info->tokenName, info->tokenLexema);
+            StateInfo &info = dfa->getStateInfo(s);
+            if(info.acceptance) {
+                minDFA->addAcceptanceState(newState, info.tokenName, info.tokenLexema);
+                break;
+            }
         }
     }
 
