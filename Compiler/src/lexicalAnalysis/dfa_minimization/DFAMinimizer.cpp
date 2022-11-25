@@ -8,7 +8,7 @@ vectorDFA* DFAMinimizer::minimize(vectorDFA *dfa) {
 vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
     vector<unordered_map<char, toState>> &table = dfa->getTransitionTable();
     vector<int> group = assignGroups(dfa);
-    removeDeadStates();
+    removeDeadStates(dfa, group);
     int nGroups = countGroups(group), oldNGroups;
 
     do {
@@ -17,6 +17,8 @@ vector<int> DFAMinimizer::findEquivalence(vectorDFA *dfa) {
         vector<vector<int>> groups_list = groupsList(group, nGroups);
 
         for(auto g : groups_list) {
+            if(g.size() < 2) continue;
+
             vector<int> group_represent = {g.front()};
             for(auto state : g) {
                 bool equiv_found = false;
@@ -61,8 +63,24 @@ vector<int> DFAMinimizer::assignGroups(vectorDFA *dfa) {
     return group;
 }
 
-void DFAMinimizer::removeDeadStates() {
-    //TODO
+void explore(int state, vector<unordered_map<char, toState>> &table, unordered_set<int> &visited) {
+    visited.insert(state);
+    for (auto e : table[state]) {
+        int s = e.second.get();
+        if(visited.count(s) == 0) {
+            explore(s, table, visited);
+        }
+    }
+}
+
+void DFAMinimizer::removeDeadStates(vectorDFA *dfa, vector<int> &group) {
+    unordered_set<int> visited;
+    explore(0, dfa->getTransitionTable(), visited);
+    for (int i = 0; i < group.size(); ++i) {
+        if(visited.count(i) == 0) {
+            group[i] = -1;
+        }
+    }
 }
 
 int DFAMinimizer::countGroups(vector<int> &group) {
@@ -112,7 +130,7 @@ vectorDFA *DFAMinimizer::mergeGroups(vector<int> &group, vectorDFA *dfa) {
         for (auto s : g) {
             StateInfo &info = dfa->getStateInfo(s);
             if(info.acceptance) {
-                minDFA->addAcceptanceState(newState, info.tokenName, info.tokenLexema);
+                minDFA->addAcceptanceState(newState, info.tokenName);
                 break;
             }
         }

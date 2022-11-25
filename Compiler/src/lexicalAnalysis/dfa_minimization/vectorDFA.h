@@ -14,12 +14,10 @@ class StateInfo {
 public:
     bool acceptance = false;
     string tokenName;
-    string tokenLexema;
 
     StateInfo() = default;
-    StateInfo(string tokenName, string tokenLexema) {
+    explicit StateInfo(string tokenName) {
         this->tokenName = std::move(tokenName);
-        this->tokenLexema = std::move(tokenLexema);
     }
 };
 
@@ -34,7 +32,7 @@ public:
     vector<unordered_map<char, toState>> &getTransitionTable();
     StateInfo &getStateInfo(int state);
     void addTransition(int start, char input, int end);
-    void addAcceptanceState(int state, string &tokenName, string &tokenLexema);
+    void addAcceptanceState(int state, string &tokenName);
     int nextState(int currentState, char input);
 };
 

@@ -1,7 +1,5 @@
 #include "vectorDFA.h"
 
-#include <utility>
-
 vectorDFA::vectorDFA(int nStates) {
     this->transitionTable = vector<unordered_map<char, toState>>(nStates);
     this->states = vector<StateInfo>(nStates);
@@ -15,7 +13,7 @@ vectorDFA::vectorDFA(vector<DFAstate *> &dfaVec) {
     for (int i = 0; i < nStates; ++i) {
         DFAstate *state = dfaVec[i];
         if(state->acceptance)
-            addAcceptanceState(i, state->tokenName, state->tokenLexema);
+            addAcceptanceState(i, state->tokenName);
         for (auto &edge : state->transitions) {
             this->addTransition(i, edge.first, edge.second.get());
         }
@@ -30,10 +28,9 @@ void vectorDFA::addTransition(int start, char input, int end) {
     this->transitionTable[start][input] = toState(end);
 }
 
-void vectorDFA::addAcceptanceState(int state, string &tokenName, string &tokenLexema) {
+void vectorDFA::addAcceptanceState(int state, string &tokenName) {
     states[state].acceptance = true;
     states[state].tokenName = tokenName;
-    states[state].tokenLexema = tokenLexema;
 }
 
 StateInfo &vectorDFA::getStateInfo(int state) {
