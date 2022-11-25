@@ -1,2 +1,7 @@
-/cmake-build-debug
-/bin
+.idea/
+cmake-build-debug/
+bin/
+obj/
+Compiler.cbp
+Compiler.depend
+Compiler.layout

@@ -26,11 +26,9 @@ public:
     }
 
     ~NFAGenerator() {
-        std::cout << "start deleting NFA graph ...." << std::endl;
         for (auto state : internalNFAStates){
             delete state;
         }
-        std::cout << "NFA graph deleted -_-!" << std::endl;
     }
 
     NFAstate *getNFARoot() {

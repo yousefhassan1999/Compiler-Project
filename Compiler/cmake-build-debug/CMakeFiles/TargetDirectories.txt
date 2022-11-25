@@ -1,3 +1,0 @@
-F:/Projects/c++/CSE_Y4/Compiler-Project/Compiler/cmake-build-debug/CMakeFiles/Compiler.dir
-F:/Projects/c++/CSE_Y4/Compiler-Project/Compiler/cmake-build-debug/CMakeFiles/edit_cache.dir
-F:/Projects/c++/CSE_Y4/Compiler-Project/Compiler/cmake-build-debug/CMakeFiles/rebuild_cache.dir

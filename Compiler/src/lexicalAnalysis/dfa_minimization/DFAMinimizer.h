@@ -5,15 +5,15 @@
 
 class DFAMinimizer {
 private:
-    vector<int> findEquivalence(vectorDFA *dfa);
+    static vector<int> findEquivalence(vectorDFA *dfa);
     static vector<int> assignGroups(vectorDFA *dfa);
     static vector<vector<int>> groupsList(vector<int> &group, int nGroups);
     static vectorDFA* mergeGroups(vector<int> &group, vectorDFA *dfa);
-    void removeDeadStates();
+    static void removeDeadStates(vectorDFA *dfa, vector<int> &group);
     static int countGroups(vector<int> &group);
     static bool equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa);
 public:
-    vectorDFA* minimize(vectorDFA *dfa);
+    static vectorDFA* minimize(vectorDFA *dfa);
 };
 
 

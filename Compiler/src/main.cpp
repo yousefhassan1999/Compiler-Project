@@ -24,22 +24,69 @@ void test(vectorDFA *dfa) {
     }while(!input.empty());
 }
 
-int main() {
-    LexicalGenerator ob;
-    DFAMinimizer minimizer;
+LexicalGenerator *readRules(const string &rulesPath) {
+    auto start = chrono::steady_clock::now();
 
-    ob.getLexicalRules()->readFileContent(".././lexical rules.txt");
-    auto *nfaGenerator = new NFAGenerator(ob.getLexicalRules());
+    auto *lGenerator = new LexicalGenerator();
+    lGenerator->getLexicalRules()->readFileContent(rulesPath);
 
-    DFA dfa(ob.getLexicalRules()->getRules(), nfaGenerator->getNFARoot());
+    auto end = chrono::steady_clock::now();
+    cout << "readRules: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
+
+    return lGenerator;
+}
+
+NFAGenerator *generateNFA(LexicalGenerator *rules) {
+    auto start = chrono::steady_clock::now();
+
+    auto *nfaGenerator = new NFAGenerator(rules->getLexicalRules());
+
+    auto end = chrono::steady_clock::now();
+    cout << "generateNFA: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
+
+    return nfaGenerator;
+}
+
+vector<DFAstate *> generateDFA(LexicalGenerator *rules, NFAGenerator *nfa) {
+    auto start = chrono::steady_clock::now();
+
+    DFA dfa(rules->getLexicalRules()->getRules(), nfa->getNFARoot());
     vector<DFAstate *> dfaVec = dfa.build_DFA();
-    delete nfaGenerator;
+
+    auto end = chrono::steady_clock::now();
+    cout << "generateDFA: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
+
+    return dfaVec;
+}
+
+vectorDFA *minimizeDFA(vector<DFAstate *> &dfaVec) {
+    auto start = chrono::steady_clock::now();
 
     vectorDFA vecDFA(dfaVec);
-    vectorDFA *minimizedDFA = minimizer.minimize(&vecDFA);
+    vectorDFA *minimizedDFA = DFAMinimizer::minimize(&vecDFA);
 
-    printf("Original: %zu,  Minimized: %zu\n", dfaVec.size(), minimizedDFA->getTransitionTable().size());
+    auto end = chrono::steady_clock::now();
+    cout << "minimizeDFA: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
 
-    test(minimizedDFA);
+    return minimizedDFA;
+}
+
+int main() {
+    auto rules = readRules(".././lexical rules.txt");
+    auto nfa = generateNFA(rules);
+    auto dfaVec = generateDFA(rules, nfa);
+
+    delete rules;
+    delete nfa;
+
+    auto minDFA = minimizeDFA(dfaVec);
+    printf("Original: %zu,  Minimized: %zu\n", dfaVec.size(), minDFA->getTransitionTable().size());
+
+    for (auto x : dfaVec) {
+        delete x;
+    }
+    dfaVec.clear();
+
+    test(minDFA);
     return 0;
 }
