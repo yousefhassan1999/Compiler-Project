@@ -38,5 +38,7 @@ StateInfo &vectorDFA::getStateInfo(int state) {
 }
 
 int vectorDFA::nextState(int currentState, char input) {
-    return this->transitionTable[currentState][input].get();
+    if(this->transitionTable[currentState].count(input) == 0)
+        return -1;
+    return this->transitionTable[currentState].at(input).get();
 }

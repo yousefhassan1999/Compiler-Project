@@ -101,13 +101,12 @@ vector<vector<int>> DFAMinimizer::groupsList(vector<int> &group, int nGroups) {
 }
 
 bool DFAMinimizer::equivalent(int s1, int s2, vector<int> &group, vectorDFA *dfa) {
-    unordered_map<char, toState> &edges1 = dfa->getTransitionTable()[s1];
-    unordered_map<char, toState> &edges2 = dfa->getTransitionTable()[s2];
+    unordered_map<char, toState>
+            &edges1 = dfa->getTransitionTable()[s1],
+            &edges2 = dfa->getTransitionTable()[s2],
+            &maxEdges = edges1.size() > edges2.size() ? edges1 : edges2;
 
-    if(edges1.size() != edges2.size())
-        return false;
-
-    for(auto edge : edges1) {
+    for(auto edge : maxEdges) {
         if(group[dfa->nextState(s1, edge.first)] != group[dfa->nextState(s2, edge.first)]) {
             return false;
         }
