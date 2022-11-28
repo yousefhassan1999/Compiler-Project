@@ -11,7 +11,7 @@
 #include <iostream>
 #include <unordered_set>
 
-#include "src/lexicalAnalysis/lexicalRules.h"
+#include "src/lexicalAnalysis/LexicalRules/lexicalRules.h"
 #include "src/lexicalAnalysis/shared/NFAState.h"
 #include "NFAStackNode.h"
 

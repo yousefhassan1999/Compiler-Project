@@ -1,4 +1,3 @@
-#include "src/lexicalAnalysis/lexicalGenerator.h"
 #include "src/lexicalAnalysis/nfaGraphGenerator/NFAGenerator.h"
 #include "src/lexicalAnalysis/dfaGraphGenerator/DFA.h"
 #include "src/lexicalAnalysis/dfa_minimization/vectorDFA.h"
@@ -24,22 +23,22 @@ void test(vectorDFA *dfa) {
     }while(!input.empty());
 }
 
-LexicalGenerator *readRules(const string &rulesPath) {
+LexicalRules *readRules(const string &rulesPath) {
     auto start = chrono::steady_clock::now();
 
-    auto *lGenerator = new LexicalGenerator();
-    lGenerator->getLexicalRules()->readFileContent(rulesPath);
+    auto *lRules = new LexicalRules();
+    lRules->readFileContent(rulesPath);
 
     auto end = chrono::steady_clock::now();
     cout << "readRules: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
 
-    return lGenerator;
+    return lRules;
 }
 
-NFAGenerator *generateNFA(LexicalGenerator *rules) {
+NFAGenerator *generateNFA(LexicalRules *rules) {
     auto start = chrono::steady_clock::now();
 
-    auto *nfaGenerator = new NFAGenerator(rules->getLexicalRules());
+    auto *nfaGenerator = new NFAGenerator(rules);
 
     auto end = chrono::steady_clock::now();
     cout << "generateNFA: " << chrono::duration<double, milli>(end - start).count() << " ms" << endl;
@@ -47,10 +46,10 @@ NFAGenerator *generateNFA(LexicalGenerator *rules) {
     return nfaGenerator;
 }
 
-vector<DFAstate *> generateDFA(LexicalGenerator *rules, NFAGenerator *nfa) {
+vector<DFAstate *> generateDFA(LexicalRules *rules, NFAGenerator *nfa) {
     auto start = chrono::steady_clock::now();
 
-    DFA dfa(rules->getLexicalRules()->getRules(), nfa->getNFARoot());
+    DFA dfa(rules->getRules(), nfa->getNFARoot());
     vector<DFAstate *> dfaVec = dfa.build_DFA();
 
     auto end = chrono::steady_clock::now();
