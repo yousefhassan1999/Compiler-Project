@@ -11,19 +11,32 @@ NFAstate *NFAGenerator::generateNFA(LexicalRules *lexicalRules) {
     stack<NFAStackNode *> nfaStack;
     for (auto rule: *lexicalRules->getRules()) {
         char last = 0;
+        bool ignoreAnd = false;
         for (auto ch: rule.getPostFix()) {
-            if (ch == '|') {
+            if (ch == '|' && last != '\\') {
                 applyOr(&nfaStack);
-            } else if (last!= '\\' && ch == '*') {
+            } else if (ch == '*' && last != '\\') {
                 applyZeroOrMore(nfaStack.top());
-            } else if (last!= '\\' && ch == '+') {
+            } else if (ch == '+' && last != '\\') {
                 applyOneOrMore(nfaStack.top());
             } else if (ch == ' ') {
+                if (ignoreAnd){
+                    ignoreAnd = false;
+                    continue;
+                }
                 applyAnd(&nfaStack);
             } else {
-                nfaStack.push(generateBaseNFA(ch));
+                if (ch != '\\' || last == '\\'){
+                    nfaStack.push(generateBaseNFA(ch));
+                } else {
+                    ignoreAnd = true;
+                }
+                if (last == '\\'){
+                    last = 0;
+                } else {
+                    last = ch;
+                }
             }
-            last = ch;
         }
         acceptNFA(nfaStack.top(), rule.getTokenName());
         if (nfaStack.size() == 2) {
