@@ -83,6 +83,42 @@ private:
         return minDFA;
     }
 
+    static void parseToken(const string &token, ofstream &outputFile, vectorDFA *dfa) {
+        int originalState = 0, start = -1, maxAcceptanceState = -1;
+        bool reportError = false;
+        for (int i = 0; i < token.size(); i++) {
+            originalState = dfa->nextState(originalState, token[i]);
+            if (originalState == -1) {
+                if (maxAcceptanceState != -1) { // apply maximal munch
+                    outputAcceptanceState(dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+                    i = start;
+                    maxAcceptanceState = -1;
+                } else { // apply panic recovery
+                    reportError = true;
+                    start++;
+                    i = start;
+                }
+                originalState = 0;
+            } else if (dfa->getStateInfo(originalState).acceptance) {
+                maxAcceptanceState = originalState;
+                start = i;
+            }
+        }
+        if (maxAcceptanceState != -1) {
+            outputAcceptanceState(dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+        } else {
+            outputFile << "Invalid input!" << endl;
+        }
+    }
+
+    static void outputAcceptanceState(const StateInfo &stateInfo, bool &reportError, ofstream &outputFile) {
+        if (reportError) {
+            outputFile << "Error reported and fixed to -> ";
+            reportError = false;
+        }
+        outputFile << stateInfo.tokenName.c_str() << endl;
+    }
+
     static void parseInputFile(const string &inputFilePath, const string &outputFilePath, vectorDFA *dfa) {
         ifstream inputFile;
         inputFile.open(inputFilePath.c_str());
@@ -90,26 +126,7 @@ private:
         outputFile.open(outputFilePath.c_str());
         string token;
         while (inputFile >> token) {
-            int state = 0, start = 0;
-            for (int i = start; i < token.size(); i++) {
-                state = dfa->nextState(state, token[i]);
-                if (state == -1 && start < token.size() - 1) {
-                    i = start;
-                    start++;
-                    state = 0;
-                }
-            }
-            if (state != -1 && dfa->getStateInfo(state).acceptance) {
-                if (start != 0) {
-                    outputFile << "Error reported and fixed to -> ";
-                    printf("Error reported and fixed to -> ");
-                }
-                outputFile << dfa->getStateInfo(state).tokenName.c_str() << endl;
-                printf("state %d: %s\n", state, dfa->getStateInfo(state).tokenName.c_str());
-            } else {
-                outputFile << "Invalid input!" << endl;
-                printf("Invalid input!\n");
-            }
+            parseToken(token, outputFile, dfa);
         }
         inputFile.close();
         outputFile.close();
