@@ -86,37 +86,41 @@ private:
     static void parseToken(const string &token, ofstream &outputFile, vectorDFA *dfa) {
         int originalState = 0, start = -1, maxAcceptanceState = -1;
         bool reportError = false;
+        string lexema = "", maxAcceptanceLexema = "";
         for (int i = 0; i < token.size(); i++) {
+            lexema += token[i];
             originalState = dfa->nextState(originalState, token[i]);
             if (originalState == -1) {
                 if (maxAcceptanceState != -1) { // apply maximal munch
-                    outputAcceptanceState(dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+                    outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
                     i = start;
                     maxAcceptanceState = -1;
-                } else { // apply panic recovery
+                } else { // apply panic mode recovery
                     reportError = true;
                     start++;
                     i = start;
                 }
                 originalState = 0;
+                lexema = "";
             } else if (dfa->getStateInfo(originalState).acceptance) {
                 maxAcceptanceState = originalState;
+                maxAcceptanceLexema = lexema;
                 start = i;
             }
         }
         if (maxAcceptanceState != -1) {
-            outputAcceptanceState(dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+            outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
         } else {
             outputFile << "Invalid input!" << endl;
         }
     }
 
-    static void outputAcceptanceState(const StateInfo &stateInfo, bool &reportError, ofstream &outputFile) {
+    static void outputAcceptanceState(const string &lexema, const StateInfo &stateInfo, bool &reportError, ofstream &outputFile) {
         if (reportError) {
             outputFile << "Error reported and fixed to -> ";
             reportError = false;
         }
-        outputFile << stateInfo.tokenName.c_str() << endl;
+        outputFile << lexema << " -> (" << stateInfo.tokenName.c_str() << ")" << endl;
     }
 
     static void parseInputFile(const string &inputFilePath, const string &outputFilePath, vectorDFA *dfa) {
