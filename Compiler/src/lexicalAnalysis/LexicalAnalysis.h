@@ -141,6 +141,7 @@ public:
     //TODO make non static when create the tokens queue (Milestone 2)
     static void analyzeInput() {
         auto minDFA = getMinimizedDFA();
+        minDFA->printTransitionTable("../transition_table.csv");
         //TODO Files path need to be taken from the console
         parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
         delete minDFA;
