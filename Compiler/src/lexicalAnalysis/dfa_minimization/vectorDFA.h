@@ -34,6 +34,7 @@ public:
     void addTransition(int start, char input, int end);
     void addAcceptanceState(int state, string &tokenName);
     int nextState(int currentState, char input);
+    void printTransitionTable(const string& filePath);
 };
 
 #endif //COMPILER_VECTOR_DFA_H
