@@ -41,28 +41,6 @@ unordered_set<NFAstate*> DFA::move(unordered_set<NFAstate*> closure, char a) {
 }
 
 
-void DFA::create_inputs(vector<PostfixContainer> *rules){
-    for (auto &it: *rules) {
-        for (int i = 0 ; i < it.getPostFix().length() ; i++) {
-            char ch = it.getPostFix()[i];
-            if(ch !='|' && ch!='*' && ch!='+' && ch!=' ' ){
-                chars.insert(ch);
-            }else{
-                for(int j = i-1 ; j >-1 ; j--){
-                    if(it.getPostFix()[j] != ' '){
-                        if(it.getPostFix()[j] == '\\'){
-                            chars.insert(ch);
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    chars.erase(' ');
-}
-
-
 vector<DFAstate *> DFA::build_DFA(){
     vector<DFAstate *> states;
     auto *first = new DFAstate();;
@@ -92,7 +70,17 @@ vector<DFAstate *> DFA::build_DFA(){
         } else {
             continue;
         }
-        for (set<char>::iterator a = chars.begin();a != chars.end(); a++){
+        unordered_set<char> chars;
+        for (auto itr : states[i]->closure )
+        {
+            for (auto c: itr->getTransitions()){
+                if(c.first != ' ') {
+                    chars.insert(c.first);
+                }
+            }
+        }
+
+        for (auto a = chars.begin();a != chars.end(); a++){
             unordered_set<NFAstate*> new_closure = move(states[i]->closure, *a);
             epsilonClosure(&new_closure);
             auto *u = new DFAstate();

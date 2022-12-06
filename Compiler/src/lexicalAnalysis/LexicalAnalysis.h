@@ -41,10 +41,10 @@ private:
         return nfaGenerator;
     }
 
-    static vector<DFAstate *> generateDFA(LexicalRules *rules, NFAGenerator *nfa) {
+    static vector<DFAstate *> generateDFA(NFAGenerator *nfa) {
         auto start = chrono::steady_clock::now();
 
-        DFA dfa(rules->getRules(), nfa->getNFARoot());
+        DFA dfa(nfa->getNFARoot());
         vector<DFAstate *> dfaVec = dfa.build_DFA();
 
         auto end = chrono::steady_clock::now();
@@ -68,7 +68,7 @@ private:
     static vectorDFA *getMinimizedDFA() {
         auto rules = readRules(".././lexical rules.txt");
         auto nfa = generateNFA(rules);
-        auto dfaVec = generateDFA(rules, nfa);
+        auto dfaVec = generateDFA(nfa);
 
         delete rules;
         delete nfa;
