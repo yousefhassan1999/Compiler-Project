@@ -141,8 +141,12 @@ public:
     //TODO make non static when create the tokens queue (Milestone 2)
     static void analyzeInput() {
         auto minDFA = getMinimizedDFA();
-        //TODO Files path need to be taken from the console
-        parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
+        char parseAgain = 'y';
+        while (parseAgain == 'y'){
+            parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
+            cout << "Successful Parsing, parse Again? (y)" << endl;
+            cin >> parseAgain;
+        }
         delete minDFA;
     }
 
