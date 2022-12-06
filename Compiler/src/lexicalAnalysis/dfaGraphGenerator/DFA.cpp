@@ -49,7 +49,7 @@ void DFA::create_inputs(vector<PostfixContainer> *rules){
                 chars.insert(ch);
             }else{
                 for(int j = i-1 ; j >-1 ; j--){
-                    if(it.getPostFix()[j]!=' ' ){
+                    if(it.getPostFix()[j] != ' '){
                         if(it.getPostFix()[j] == '\\'){
                             chars.insert(ch);
                         }
@@ -57,9 +57,9 @@ void DFA::create_inputs(vector<PostfixContainer> *rules){
                     }
                 }
             }
-
         }
     }
+    chars.erase(' ');
 }
 
 
