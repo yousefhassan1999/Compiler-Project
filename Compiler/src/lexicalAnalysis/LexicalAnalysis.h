@@ -142,8 +142,12 @@ public:
     static void analyzeInput() {
         auto minDFA = getMinimizedDFA();
         minDFA->printTransitionTable("../transition_table.csv");
-        //TODO Files path need to be taken from the console
-        parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
+        char parseAgain = 'y';
+        while (parseAgain == 'y'){
+            parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
+            cout << "Successful Parsing, parse Again? (y)" << endl;
+            cin >> parseAgain;
+        }
         delete minDFA;
     }
 
