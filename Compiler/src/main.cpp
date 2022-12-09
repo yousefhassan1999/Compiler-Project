@@ -1,12 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include "src/lexicalAnalysis/lexicalGenerator.h"
+#include "src/lexicalAnalysis/LexicalAnalysis.h"
 
 using namespace std;
 
 int main() {
-    LexicalGenerator ob;
-    ob.getLexicalRules().readFileContent("D:\\lexical rules.txt");
-    ob.generateNfa();
+    LexicalAnalysis::analyzeInput();
     return 0;
 }
