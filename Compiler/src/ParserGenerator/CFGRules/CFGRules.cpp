@@ -34,6 +34,8 @@ void CFGRules::readFileContent(const string &Path) {
     MyReadFile.close();
 }
 
+
+
 map<string, vector<string>>* CFGRules::GetCFGRulesVec(){
     return &CFGRulesVec;
 }
