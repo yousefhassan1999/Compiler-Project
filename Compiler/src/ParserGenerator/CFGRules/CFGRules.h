@@ -3,28 +3,28 @@
 
 #include <vector>
 #include <map>
-#include <unordered_map>
 #include <string>
 #include <list>
+#include "CFGContainer.h"
 
 class CFGRules {
 
-    std::map<std::string, std::list<std::string>> CFGRulesVec;
+    std::list<CFGContainer> CFGRulesVec;
     int incremental = 0;
 
 public:
     void readFileContent(const std::string &Path);
 
-    std::map<std::string, std::list<std::string>> *GetCFGRulesVec();
+    std::list<CFGContainer> *GetCFGRulesVec();
 
     void RemoveLeftRec();
-
-    void RemoveIndirectLeftRec();
 
 private:
     static std::list<std::string> SplitOr(std::string RHSBasicString, std::string basicString);
 
     static std::string deleteLeadingAndTrailingSpace(std::string basicString);
+
+    bool LeftRecUpdate(std::string Key, std::list<std::string> *RHSVec, CFGContainer *newContainer);
 
 };
 

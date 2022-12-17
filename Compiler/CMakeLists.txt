@@ -26,4 +26,5 @@ add_executable(Compiler
         src/lexicalAnalysis/LexicalAnalysis.h
         src/ParserGenerator/CFGRules/CFGRules.h
         src/ParserGenerator/CFGRules/CFGRules.cpp
-        )
+        src/ParserGenerator/CFGRules/CFGContainer.cpp
+        src/ParserGenerator/CFGRules/CFGContainer.h)

@@ -1,7 +1,6 @@
 #include <fstream>
 #include <string>
 #include <regex>
-#include <map>
 #include <iostream>
 #include "CFGRules.h"
 
@@ -19,19 +18,25 @@ void CFGRules::readFileContent(const string &Path) {
             myProduction += " " + myLine;
         } else {
             int pos = myProduction.find('=');
-            string RHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
-            list<string> RHS = SplitOr(RHSString, deleteLeadingAndTrailingSpace(
+            string LHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
+            list<string> RHS = SplitOr(LHSString, deleteLeadingAndTrailingSpace(
                     myProduction.substr(pos + 1, myProduction.size() - 1)));
-            CFGRulesVec.insert(pair<string, list<string>>(RHSString, RHS));
+            CFGContainer container;
+            container.SetNonTerminal(LHSString);
+            container.SetRHS(RHS);
+            CFGRulesVec.push_back(container);
 
             myProduction = myLine;
         }
     }
     int pos = myProduction.find('=');
-    string RHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 1));
-    list<string> RHS = SplitOr(RHSString,
+    string LHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
+    list<string> RHS = SplitOr(LHSString,
                                deleteLeadingAndTrailingSpace(myProduction.substr(pos + 1, myProduction.size() - 1)));
-    CFGRulesVec.insert(pair<string, list<string>>(RHSString, RHS));
+    CFGContainer container;
+    container.SetNonTerminal(LHSString);
+    container.SetRHS(RHS);
+    CFGRulesVec.push_back(container);
     MyReadFile.close();
 
 }
@@ -48,7 +53,6 @@ list<string> CFGRules::SplitOr(string RHSBasicString, string basicString) {
         } else {
             RHSVec.push_back(S1);
         }
-
     }
     int firstPosCheck = basicString.find(RHSBasicString);
     if (firstPosCheck == 0) {
@@ -59,51 +63,77 @@ list<string> CFGRules::SplitOr(string RHSBasicString, string basicString) {
     return RHSVec;
 }
 
+bool CFGRules::LeftRecUpdate(string Key, list<string> *RHSVec, CFGContainer *newContainer) {
+    int incremental = 0;
+    list<string> newProdVecString;
+    // get the part that case left rec
+    for (auto i = RHSVec->begin(); i != RHSVec->end(); ++i) {
+        if (i->find(Key) != 0) {
+            break;
+        }
+        newProdVecString.push_back(*i);
+    }
+    if (newProdVecString.size() > 0) {
+        // remove the part that case left rec from map
+        for (int i = 0; i < newProdVecString.size(); i++) {
+            RHSVec->pop_front();
+        }
+        string newKey = Key + "_" + to_string(incremental++);
+
+        for (auto i = RHSVec->begin(); i != RHSVec->end(); ++i) {
+            *i += " " + newKey;
+        }
+
+        for (auto i = newProdVecString.begin(); i != newProdVecString.end(); ++i) {
+            *i += " " + newKey;
+            *i = (*i).substr(Key.size() + 1, (*i).size());
+        }
+
+        newProdVecString.push_back(" ");
+        newContainer->SetNonTerminal(newKey);
+        newContainer->SetRHS(newProdVecString);
+        return true;
+    }
+    return false;
+}
+
 void CFGRules::RemoveLeftRec() {
-    map<string, list<string>>::iterator itr;
-    for (itr = CFGRulesVec.begin(); itr != CFGRulesVec.end(); ++itr) {
-        string Key = itr->first;
-        list<string> newProdVecString;
-        // get the part that case left rec
-        for (auto i = itr->second.begin(); i != itr->second.end(); ++i) {
-            if ((*i).find(Key) != 0) {
-                break;
+    list<CFGContainer>::iterator itr1;
+    list<CFGContainer>::iterator itr2;
+    for (itr1 = CFGRulesVec.begin(); itr1 != CFGRulesVec.end(); ++itr1) {
+        string LHSNonTerminalRoot = itr1->GetNonTerminal();
+        list<string> RHSVecRoot = *itr1->GetRHS();
+        for (itr2 = CFGRulesVec.begin(); itr2 != itr1; ++itr2) {
+            string LHSNonTerminal = itr2->GetNonTerminal();
+            list<string> RHSVec = *itr2->GetRHS();
+            for (auto i = RHSVecRoot.begin(); i != RHSVecRoot.end(); ++i) {
+                if (i->find(LHSNonTerminal) == 0) {
+                    string cut = deleteLeadingAndTrailingSpace(i->substr(LHSNonTerminal.size(), i->size()));
+                    RHSVecRoot.erase(i);
+                    for (auto j = RHSVec.begin(); j != RHSVec.end(); ++j) {
+                        string toPushInList = deleteLeadingAndTrailingSpace(*j + " " + cut);
+                        int firstPosCheck = toPushInList.find(LHSNonTerminalRoot);
+                        if (firstPosCheck == 0) {
+                            RHSVecRoot.push_front(toPushInList);
+                        } else {
+                            RHSVecRoot.push_back(toPushInList);
+                        }
+                    }
+                }
             }
-            newProdVecString.push_back(CFGRulesVec.at(Key).front());
         }
-        if (newProdVecString.size() > 0) {
-            // remove the part that case left rec from map
-            for (int i = 0; i < newProdVecString.size(); i++) {
-                CFGRulesVec.at(Key).pop_front();
-            }
-            string newKey = Key + "_" + to_string(incremental++);
-
-            for (auto i = itr->second.begin(); i != itr->second.end(); ++i) {
-                *i += " " + newKey;
-            }
-
-            for (auto i = newProdVecString.begin(); i != newProdVecString.end(); ++i) {
-                *i += " " + newKey;
-                *i = (*i).substr(Key.size()+1, (*i).size());
-            }
-            newProdVecString.push_back(" ");
-            CFGRulesVec.insert(pair<string, list<string>>(newKey, newProdVecString));
+        CFGContainer container;
+        bool checkNewState = LeftRecUpdate(LHSNonTerminalRoot, &RHSVecRoot, &container);
+        if (checkNewState) {
+            itr1->SetRHS(RHSVecRoot);
+            itr1++;
+            CFGRulesVec.insert(itr1--, container);
         }
     }
 }
 
-void CFGRules::RemoveIndirectLeftRec() {
-    map<string, int> ProductionsOrder;
-    map<string, list<string>>::iterator itr;
-    int orderCount = 0;
 
-    for (itr = CFGRulesVec.begin(); itr != CFGRulesVec.end(); ++itr) {
-        ProductionsOrder.insert(pair<string, int>(itr->first, orderCount++));
-    }
-
-}
-
-map<string, list<string>> *CFGRules::GetCFGRulesVec() {
+std::list<CFGContainer> *CFGRules::GetCFGRulesVec() {
     return &CFGRulesVec;
 }
 

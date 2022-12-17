@@ -8,11 +8,11 @@ int main() {
     CFGRules test ;
     test.readFileContent("../JavaCFG.txt");
     test.RemoveLeftRec();
-    map<string, list<string>>::iterator itr;
-    for (itr = test.GetCFGRulesVec()->begin(); itr != test.GetCFGRulesVec()->end(); ++itr) {
-        cout << '\t' << itr->first << '\t';
-        for (auto i = itr->second.begin(); i != itr->second.end(); ++i)
-            cout  << *i << '\n';
+    for (auto i = test.GetCFGRulesVec()->begin(); i != test.GetCFGRulesVec()->end(); ++i) {
+        cout << '\t' << i->GetNonTerminal() << '\t';
+        for (auto j = i->GetRHS()->begin(); j != i->GetRHS()->end(); ++j)
+            cout  << *j << '\t';
+        cout << '\n';
     }
     return 0;
 }
