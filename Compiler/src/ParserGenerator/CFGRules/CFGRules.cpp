@@ -89,7 +89,7 @@ bool CFGRules::LeftRecUpdate(string Key, list<string> *RHSVec, CFGContainer *new
             *i = (*i).substr(Key.size() + 1, (*i).size());
         }
 
-        newProdVecString.push_back(" ");
+        newProdVecString.push_back("Epsilon");
         newContainer->SetNonTerminal(newKey);
         newContainer->SetRHS(newProdVecString);
         return true;
