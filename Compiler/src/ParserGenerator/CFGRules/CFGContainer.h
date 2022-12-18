@@ -1,7 +1,3 @@
-//
-// Created by Youssef on 12/16/2022.
-//
-
 #ifndef COMPILER_CFGCONTAINER_H
 #define COMPILER_CFGCONTAINER_H
 

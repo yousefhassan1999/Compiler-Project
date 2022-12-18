@@ -4,7 +4,7 @@
 #include <string>
 
 class PostfixContainer {
-
+private:
     std::string tokenName;
     std::string postFix;
 
@@ -16,9 +16,6 @@ public:
     std::string &getTokenName();
 
     std::string &getPostFix();
-
-private:
-
 };
 
 #endif // NFA_POSTFIX_H_INCLUDED
