@@ -22,4 +22,9 @@ add_executable(Compiler
         src/lexicalAnalysis/dfa_minimization/vectorDFA.cpp
         src/lexicalAnalysis/dfa_minimization/vectorDFA.h
         src/lexicalAnalysis/dfa_minimization/DFAMinimizer.cpp
-        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h src/lexicalAnalysis/LexicalAnalysis.h)
+        src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h
+        src/lexicalAnalysis/LexicalAnalysis.h
+        src/ParserGenerator/CFGRules/CFGRules.h
+        src/ParserGenerator/CFGRules/CFGRules.cpp
+        src/ParserGenerator/CFGRules/CFGContainer.cpp
+        src/ParserGenerator/CFGRules/CFGContainer.h)
