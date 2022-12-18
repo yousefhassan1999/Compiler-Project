@@ -12,18 +12,21 @@
 #include <list>
 #include <vector>
 #include "src/parserGenerator/CFGRules/CFGContainer.h"
-
+using namespace std;
 class ParseTable {
 private:
     std::unordered_map<std::string, int> nonTerminalIndices;
     std::unordered_map<std::string, int> terminalIndices;
     std::string startSymbol;
     std::unordered_map<std::string, std::unordered_set<std::string>> first;
+    unordered_map<string,list<string>> container;
     std::unordered_map<std::string, std::unordered_set<std::string>> follows;
     std::list<CFGContainer> parserRules;
 
     static std::vector<std::string> split(const std::string& str);
-
+    void tokenize(std::string const &str, const char delim,
+                  std::vector<std::string> &out);
+    void calc_first(string k,list<string> RHS);
     void createFirst();
     void createFollows();
     void createParseTable();

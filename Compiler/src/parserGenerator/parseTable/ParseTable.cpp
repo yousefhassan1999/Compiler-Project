@@ -60,7 +60,14 @@ void ParseTable::createFollows() {
 }
 
 void ParseTable::createFirst() {
-
+    for(auto it = parserRules.begin(); it != parserRules.end();++it){
+        CFGContainer c = *it;
+        container.insert({c.GetNonTerminal(),*c.GetRHS()});
+    }
+    for(auto it = parserRules.begin(); it != parserRules.end();++it){
+        CFGContainer c = *it;
+        calc_first(c.GetNonTerminal(),*c.GetRHS());
+    }
 }
 
 vector<string> ParseTable::split(const string &str) {
@@ -71,4 +78,48 @@ vector<string> ParseTable::split(const string &str) {
         res.push_back(word);
     }
     return res;
+}
+
+void ParseTable::tokenize(const string &str, const char delim, vector<std::string> &out) {
+    std::stringstream ss(str);
+
+    std::string s;
+    while (std::getline(ss, s, delim)) {
+        out.push_back(s);
+    }
+}
+
+void ParseTable::calc_first(string k, list<string> RHS) {
+    if(!first[k].empty()){return;}
+
+    for(auto it = RHS.begin(); it != RHS.end();++it){
+        string str = *it;
+        if(str[0]=='\''){
+            string t = "'";
+            int z = 1;
+            while(str[z]!='\''){
+                t=t+str[z];
+                z++;
+            }
+            t=t+str[z];
+            first[k].insert(t);
+        }else if(str == EPSILON){
+            first[k].insert(EPSILON);
+        }else{
+            vector<string> out;
+            tokenize(str, ' ', out);
+            bool cnt = true;
+            for(int i = 0 ; cnt && (i < out.size() ) ; i++){
+                cnt = false;
+                list<string> c = container[out[i]];
+                calc_first(out[i],c);
+                unordered_set<string> s = first[out[i]];
+                for (const auto& elem: s) {
+                    if(elem == EPSILON) cnt = true;
+                    first[k].insert(elem);
+                }
+            }
+
+        }
+    }
 }
