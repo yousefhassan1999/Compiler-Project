@@ -24,8 +24,6 @@ private:
     std::list<CFGContainer> parserRules;
 
     static std::vector<std::string> split(const std::string& str);
-    void tokenize(std::string const &str, const char delim,
-                  std::vector<std::string> &out);
     void calc_first(string k,list<string> RHS);
     void createFirst();
     void createFollows();
@@ -47,7 +45,7 @@ public:
 //        delete follows;
 //    }
 
-    std::string getRule(std::string nonTerminal, char terminal)
+    std::string getRule(std::string nonTerminal, char terminal);
 
 
 };

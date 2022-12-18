@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <bits/stdc++.h>
 #include "ParseTable.h"
 
 #define EPSILON "Epsilon"
@@ -68,6 +69,15 @@ void ParseTable::createFirst() {
         CFGContainer c = *it;
         calc_first(c.GetNonTerminal(),*c.GetRHS());
     }
+   /* for(auto it = parserRules.begin(); it != parserRules.end();++it){
+        CFGContainer c = *it;
+        cout<<c.GetNonTerminal()<<"--> ";
+        //calc_first(c.GetNonTerminal(),*c.GetRHS());
+        for (const auto& elem: first[c.GetNonTerminal()]) {
+            cout<<elem<<",";
+        }
+        cout<<endl;
+    }*/
 }
 
 vector<string> ParseTable::split(const string &str) {
@@ -80,14 +90,6 @@ vector<string> ParseTable::split(const string &str) {
     return res;
 }
 
-void ParseTable::tokenize(const string &str, const char delim, vector<std::string> &out) {
-    std::stringstream ss(str);
-
-    std::string s;
-    while (std::getline(ss, s, delim)) {
-        out.push_back(s);
-    }
-}
 
 void ParseTable::calc_first(string k, list<string> RHS) {
     if(!first[k].empty()){return;}
@@ -106,8 +108,8 @@ void ParseTable::calc_first(string k, list<string> RHS) {
         }else if(str == EPSILON){
             first[k].insert(EPSILON);
         }else{
-            vector<string> out;
-            tokenize(str, ' ', out);
+            vector<string> out= split(str);
+            //tokenize(str, ' ', out);
             bool cnt = true;
             for(int i = 0 ; cnt && (i < out.size() ) ; i++){
                 cnt = false;
