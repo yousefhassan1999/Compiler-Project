@@ -14,6 +14,7 @@
 #include "src/lexicalAnalysis/dfaGraphGenerator/DFA.h"
 #include "src/lexicalAnalysis/dfa_minimization/vectorDFA.h"
 #include "src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h"
+#include "src/ParserGenerator/fileParser/FileParser.h"
 
 class LexicalAnalysis {
     //TODO Add the tokens queues for milestone 2
@@ -83,16 +84,16 @@ private:
         return minDFA;
     }
 
-    static void parseToken(const string &token, ofstream &outputFile, vectorDFA *dfa) {
+    static void parseToken(const string &token, ofstream &outputFile, vectorDFA *dfa, queue<string>& tokensQue) {
         int originalState = 0, start = -1, maxAcceptanceState = -1;
         bool reportError = false;
-        string lexema = "", maxAcceptanceLexema = "";
+        string lexema, maxAcceptanceLexema;
         for (int i = 0; i < token.size(); i++) {
             lexema += token[i];
             originalState = dfa->nextState(originalState, token[i]);
             if (originalState == -1) {
                 if (maxAcceptanceState != -1) { // apply maximal munch
-                    outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+                    outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile, tokensQue);
                     i = start;
                     maxAcceptanceState = -1;
                 } else { // apply panic mode recovery
@@ -109,31 +110,39 @@ private:
             }
         }
         if (maxAcceptanceState != -1) {
-            outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile);
+            outputAcceptanceState(maxAcceptanceLexema, dfa->getStateInfo(maxAcceptanceState), reportError, outputFile, tokensQue);
         } else {
             outputFile << "Invalid input!" << endl;
         }
     }
 
-    static void outputAcceptanceState(const string &lexema, const StateInfo &stateInfo, bool &reportError, ofstream &outputFile) {
+    static void outputAcceptanceState(const string &lexema, const StateInfo &stateInfo, bool &reportError, ofstream &outputFile, queue<string>& tokensQue) {
         if (reportError) {
             outputFile << "Error reported and fixed to -> ";
             reportError = false;
         }
+
+        if (stateInfo.tokenName == "Keyword" || stateInfo.tokenName == "Punctuations")
+            tokensQue.push(lexema);
+        else
+            tokensQue.push(stateInfo.tokenName);
+
         outputFile << lexema << " -> (" << stateInfo.tokenName.c_str() << ")" << endl;
     }
 
-    static void parseInputFile(const string &inputFilePath, const string &outputFilePath, vectorDFA *dfa) {
+    static queue<string> parseInputFile(const string &inputFilePath, const string &outputFilePath, vectorDFA *dfa) {
         ifstream inputFile;
         inputFile.open(inputFilePath.c_str());
         ofstream outputFile;
         outputFile.open(outputFilePath.c_str());
+        queue<string> tokensQue;
         string token;
         while (inputFile >> token) {
-            parseToken(token, outputFile, dfa);
+            parseToken(token, outputFile, dfa, tokensQue);
         }
         inputFile.close();
         outputFile.close();
+        return tokensQue;
     }
 
 public:
@@ -144,7 +153,7 @@ public:
         minDFA->printTransitionTable("../transition_table.csv");
         char parseAgain = 'y';
         while (parseAgain == 'y'){
-            parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
+            queue<string> tokensQue = parseInputFile(".././input file.txt", ".././lexical output.txt", minDFA);
             cout << "Successful Parsing, parse Again? (y)" << endl;
             cin >> parseAgain;
         }

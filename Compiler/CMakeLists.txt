@@ -27,4 +27,4 @@ add_executable(Compiler
         src/ParserGenerator/CFGRules/CFGRules.h
         src/ParserGenerator/CFGRules/CFGRules.cpp
         src/ParserGenerator/CFGRules/CFGContainer.cpp
-        src/ParserGenerator/CFGRules/CFGContainer.h)
+        src/ParserGenerator/CFGRules/CFGContainer.h src/ParserGenerator/fileParser/FileParser.cpp src/ParserGenerator/fileParser/FileParser.h src/common/ErrorLogger.cpp src/common/ErrorLogger.h)
