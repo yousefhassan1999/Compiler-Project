@@ -1,6 +1,7 @@
 #include <fstream>
 #include <string>
 #include <regex>
+#include <algorithm>
 #include <iostream>
 #include "CFGRules.h"
 
@@ -19,8 +20,8 @@ void CFGRules::readFileContent(const string &Path) {
         } else {
             int pos = myProduction.find('=');
             string LHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
-            list<string> RHS = SplitOr(LHSString, deleteLeadingAndTrailingSpace(
-                    myProduction.substr(pos + 1, myProduction.size() - 1)));
+            list<string> RHS = Split(LHSString, deleteLeadingAndTrailingSpace(
+                    myProduction.substr(pos + 1, myProduction.size() - 1)), " | ");
             CFGContainer container;
             container.SetNonTerminal(LHSString);
             container.SetRHS(RHS);
@@ -31,8 +32,9 @@ void CFGRules::readFileContent(const string &Path) {
     }
     int pos = myProduction.find('=');
     string LHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
-    list<string> RHS = SplitOr(LHSString,
-                               deleteLeadingAndTrailingSpace(myProduction.substr(pos + 1, myProduction.size() - 1)));
+    list<string> RHS = Split(LHSString,
+                             deleteLeadingAndTrailingSpace(myProduction.substr(pos + 1, myProduction.size() - 1)),
+                             " | ");
     CFGContainer container;
     container.SetNonTerminal(LHSString);
     container.SetRHS(RHS);
@@ -41,20 +43,22 @@ void CFGRules::readFileContent(const string &Path) {
 
 }
 
-list<string> CFGRules::SplitOr(string RHSBasicString, string basicString) {
+list<string> CFGRules::Split(string RHSBasicString, string basicString, string splitPattern) {
     list<string> RHSVec;
-    while (basicString.find(" | ") != string::npos) {
-        int pos = basicString.find(" | ");
+    while (basicString.find(splitPattern) != string::npos) {
+        int pos = basicString.find(splitPattern);
         string S1 = basicString.substr(0, pos);
-        basicString = basicString.substr(pos + 3, basicString.size());
-        int firstPosCheck = S1.find(RHSBasicString);
+        basicString =
+                RHSBasicString != "" ? basicString.substr(pos + 3, basicString.size()) : basicString.substr(pos + 1,
+                                                                                                            basicString.size());
+        int firstPosCheck = RHSBasicString != "" ? S1.find(RHSBasicString) : 1;
         if (firstPosCheck == 0) {
             RHSVec.push_front(S1);
         } else {
             RHSVec.push_back(S1);
         }
     }
-    int firstPosCheck = basicString.find(RHSBasicString);
+    int firstPosCheck = RHSBasicString != "" ? basicString.find(RHSBasicString) : 1;
     if (firstPosCheck == 0) {
         RHSVec.push_front(basicString);
     } else {
@@ -132,6 +136,99 @@ void CFGRules::RemoveLeftRec() {
     }
 }
 
+void CFGRules::ApplyLeftRefactor() {
+    list<CFGContainer>::iterator itr1;
+    for (itr1 = CFGRulesVec.begin(); itr1 != CFGRulesVec.end(); ++itr1) {
+        int StateCounter = 0;
+        string key = itr1->GetNonTerminal();
+        itr1->GetRHS()->sort();
+        list<list<string>> splitRHSVec;
+        for (auto i = (*itr1).GetRHS()->begin(); i != (*itr1).GetRHS()->end(); ++i) {
+            splitRHSVec.push_back(Split("", *i, " "));
+        }
+        list<list<string>> notFactoring;
+        int check = splitRHSVec.size();
+        while (splitRHSVec.size() > 0) {
+            list<list<string>> Factoring;
+            list<string> splitRHSVecFront = splitRHSVec.front();
+            splitRHSVec.pop_front();
+            check--;
+            list<list<string>> splitRHSVecCopy(splitRHSVec.begin(), splitRHSVec.end());
+            size_t max_num_seq = 0;
+            int num_strings = 0;
+            for (auto i = splitRHSVecFront.begin(); i != splitRHSVecFront.end(); ++i) {
+                int num_seq = 0;
+                auto j = splitRHSVecCopy.begin();
+                for (j = splitRHSVecCopy.begin(); j != splitRHSVecCopy.end(); ++j) {
+                    if ((*j).front() == (*i)) {
+                        num_seq++;
+                        (*j).pop_front();
+                    } else {
+                        break;
+                    }
+                }
+                splitRHSVecCopy.erase(j,splitRHSVecCopy.end());
+                if (max_num_seq == 0 && num_seq > 0) {
+                    max_num_seq = num_seq;
+                    num_strings++;
+                } else if (max_num_seq == num_seq && num_seq !=0) {
+                    num_strings++;
+                } else {
+                    break;
+                }
+            }
+            if (max_num_seq == 0) {
+                notFactoring.push_back(splitRHSVecFront);
+            } else {
+                auto end = std::next(splitRHSVec.begin(), std::min(max_num_seq, splitRHSVec.size()));
+                Factoring.push_front(splitRHSVecFront);
+
+                for (auto t = splitRHSVec.begin(); t != end; ++t){
+                    Factoring.push_back((*t));
+                }
+                splitRHSVec.erase(splitRHSVec.begin(),end);
+                list<string> commonFactor;
+                string newCommonFactorKey = key + "_" + to_string(StateCounter++);
+                for (auto t = Factoring.begin(); t != Factoring.end(); ++t) {
+                    for (int i = 0; i < num_strings; i++) {
+                        if (commonFactor.size() < num_strings) {
+                            commonFactor.push_back(t->front());
+                        }
+                        t->pop_front();
+                    }
+                }
+                commonFactor.push_back(newCommonFactorKey);
+                notFactoring.push_back(commonFactor);
+
+                CFGContainer container;
+                container.SetNonTerminal(newCommonFactorKey);
+                list<string> NewProductionRHS;
+                for (auto t = Factoring.begin(); t != Factoring.end(); ++t) {
+                    NewProductionRHS.push_back(ConvertListToString(*t));
+                }
+                container.SetRHS(NewProductionRHS);
+                itr1++;
+                CFGRulesVec.insert(itr1--, container);
+            }
+        }
+        list<string> EditProductionRHS;
+        for (auto t = notFactoring.begin(); t != notFactoring.end(); ++t) {
+            EditProductionRHS.push_back(ConvertListToString(*t));
+        }
+        itr1->SetRHS(EditProductionRHS);
+    }
+}
+
+string CFGRules::ConvertListToString(list<string> list) {
+    if(list.size() == 0){
+        return "Epsilon";
+    }
+    string concat = "";
+    for(auto t = list.begin(); t != list.end(); ++t){
+        concat += *t + " ";
+    }
+    return deleteLeadingAndTrailingSpace(concat);
+}
 
 std::list<CFGContainer> *CFGRules::GetCFGRulesVec() {
     return &CFGRulesVec;
@@ -153,7 +250,3 @@ string CFGRules::deleteLeadingAndTrailingSpace(string basicString) {
     }
     return basicString.substr(i, j + 1);
 }
-
-
-
-
