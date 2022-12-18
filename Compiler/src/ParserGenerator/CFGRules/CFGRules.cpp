@@ -1,6 +1,5 @@
 #include <fstream>
 #include <string>
-#include <regex>
 #include <algorithm>
 #include <iostream>
 #include "CFGRules.h"
