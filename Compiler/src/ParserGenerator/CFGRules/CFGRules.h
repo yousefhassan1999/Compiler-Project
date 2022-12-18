@@ -7,7 +7,6 @@
 #include <list>
 #include "CFGContainer.h"
 
-//done
 class CFGRules {
 
     std::list<CFGContainer> CFGRulesVec;
