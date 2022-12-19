@@ -9,7 +9,7 @@ class CFGContainer {
     std::list<std::string> RHS;
 
 public:
-    std::string GetNonTerminal();
+    std::string GetNonTerminal() const;
 
     std::list<std::string> *GetRHS();
 
