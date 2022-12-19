@@ -6,25 +6,33 @@
 #include <bits/stdc++.h>
 #include "ParseTable.h"
 
-#define EPSILON "Epsilon"
-
 void ParseTable::createParseTable() {
     createFirst();
-    //createFollows();
-    printResults();
-
+    createFollows();
     unsigned long long nonTerminalSize = nonTerminalIndices.size();
-    unsigned long long terminalSize = nonTerminalIndices.size();// modify this to match terminal size
     parseTable = new string *[nonTerminalSize];
-    for (int i = 0 ; i < nonTerminalSize; i++){
-        parseTable[i] = new string [terminalSize];
+    for (int i = 0; i < nonTerminalSize; i++) {
+        parseTable[i] = new string[terminalIndices.size()];
     }
-
-
+    for (const auto& firstElement : first){
+        string nonTerminal = firstElement.first;
+        string followContent = SYNC;
+        for (auto firstElementContent: firstElement.second){
+            if (firstElementContent.GetTerminal() == EPSILON){
+                followContent = EPSILON;
+                continue;
+            }
+            parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[firstElementContent.GetTerminal()]] = firstElementContent.GetRule();
+        }
+        for (const auto& followElement : follows[nonTerminal]){
+            parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[followElement]] = followContent;
+        }
+    }
+    printResults();
 }
 
 void ParseTable::createFollows() {
-    follows[startSymbol].insert("'$'");
+    follows[startSymbol].insert(STACK_TOP);
     int attempts = 10;
     while (attempts--) {
         for (auto rule: parserRules) {
@@ -41,13 +49,13 @@ void ParseTable::createFollows() {
                                 break;
                             }
                             //add first except epsilon
-                           /* for (const string &firstElement: first[words[i + 1]]) {
-                                if (firstElement == EPSILON) {
+                            for (FirstObject firstElement: first[words[i + 1]]) {
+                                if (firstElement.GetTerminal() == EPSILON) {
                                     addFollow = true;
                                     continue;
                                 }
-                                follows[words[i]].insert(firstElement);
-                            }*/
+                                follows[words[i]].insert(firstElement.GetTerminal());
+                            }
                             j++;
                         }
                         if (addFollow && words[i] != rule.GetNonTerminal()) {
@@ -94,10 +102,10 @@ void ParseTable::calc_first(const string &k, const list<string> &RHS) {
                 z++;
             }
             t += str[z];
-            FirstObject o(t,str);
+            FirstObject o(t, str);
             first[k].push_back(o);
         } else if (str == EPSILON) {
-            FirstObject o(EPSILON,EPSILON);
+            FirstObject o(EPSILON, EPSILON);
             first[k].push_back(o);
         } else {
             vector<string> out = split(str);
@@ -122,7 +130,7 @@ void ParseTable::printResults() {
     for (const auto &c: parserRules) {
         cout << c.GetNonTerminal() << "--> ";
         for (auto &elem: first[c.GetNonTerminal()]) {
-            cout << elem.GetTerminal()<<"  withRule:  "<< elem.GetRule() << "\t,\t";
+            cout << elem.GetTerminal() << ",";
         }
         cout << endl;
     }
@@ -134,8 +142,21 @@ void ParseTable::printResults() {
         }
         cout << endl;
     }
+
+    cout << endl << "terminalIndices:" << endl;
+    for(const auto& terminalIndex : terminalIndices){
+        cout << terminalIndex.first << " --> " << terminalIndex.second << endl;
+    }
+
+    cout << endl << "parse table:" << endl;
+    for (int i = 0 ; i < nonTerminalIndices.size() ; i++){
+        for (int j = 0 ; j < terminalIndices.size(); j++){
+            cout << "+" << parseTable[i][j] << "\t" ;
+        }
+        cout << endl;
+    }
 }
 
 string ParseTable::getRule(const string &nonTerminal, const string &terminal) {
-    return std::string();
+    return parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[terminal]];
 }

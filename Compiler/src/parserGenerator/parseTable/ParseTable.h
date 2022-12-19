@@ -5,6 +5,9 @@
 #ifndef COMPILER_PARSE_TABLE_H
 #define COMPILER_PARSE_TABLE_H
 
+#define EPSILON "Epsilon"
+#define SYNC "Sync"
+#define STACK_TOP "'$'"
 
 #include <string>
 #include <unordered_map>
@@ -43,12 +46,28 @@ public:
     explicit ParseTable(const list<CFGContainer> &rules) {
         startSymbol = rules.front().GetNonTerminal();
         int i = 0;
-        for (const auto &rule: rules) {
+        unordered_set<string> terminals;
+        for (CFGContainer rule: rules) {
             nonTerminalIndices.insert({rule.GetNonTerminal(), i});
+            for(const auto& rhs : *rule.GetRHS()){
+                for(auto element : split(rhs)){
+                    if (element[0]=='\''){
+                        terminals.insert(element);
+                    }
+                }
+            }
+            i++;
         }
+        i = 0;
+        for (const auto& terminal:terminals){
+            terminalIndices.insert({terminal,i});
+            i++;
+        }
+        terminalIndices.insert({STACK_TOP,i});
         parserRules = rules;
         createParseTable();
     }
+
 
     string getRule(const string &nonTerminal, const string &terminal);
 
