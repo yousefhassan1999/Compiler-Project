@@ -34,9 +34,6 @@ class FileParser {
 private:
     static void pushRuleToStack(const string& basicString, std::stack<string>& stack1);
 public:
-    static const string END_SYMBOL;
-    static const string EPSILON;
-    static const string SYNC;
     static list<string> parse(queue<string> tokensQue, ParsingTable& parsingTable);
     static void writeOutput(const string& filePath, list<string>& output);
 };

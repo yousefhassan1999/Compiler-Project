@@ -7,18 +7,18 @@ void initParsingTable1(ParsingTable& parsingTable) {
     parsingTable.addRule("S", "'t'", "R T");
 
     parsingTable.addRule("R", "'s'", "'s' U R 'b'");
-    parsingTable.addRule("R", "'b'", FileParser::EPSILON);
+    parsingTable.addRule("R", "'b'", EPSILON);
 
-    parsingTable.addRule("U", "'s'", FileParser::EPSILON);
-    parsingTable.addRule("U", "'b'", FileParser::EPSILON);
+    parsingTable.addRule("U", "'s'", EPSILON);
+    parsingTable.addRule("U", "'b'", EPSILON);
     parsingTable.addRule("U", "'u'", "'u' U");
 
     parsingTable.addRule("V", "'v'", "'v' V");
-    parsingTable.addRule("V", "'t'", FileParser::EPSILON);
+    parsingTable.addRule("V", "'t'", EPSILON);
 
     parsingTable.addRule("T", "'v'", "V 't' T");
     parsingTable.addRule("T", "'t'", "V 't' T");
-    parsingTable.addRule("T", "'" + FileParser::END_SYMBOL + "'", FileParser::EPSILON);
+    parsingTable.addRule("T", END_SYMBOL, EPSILON);
 }
 
 void initTokensQue1(queue<string>& tokensQue) {
@@ -38,12 +38,12 @@ void initParsingTable2(ParsingTable& parsingTable) {
     parsingTable.addRule("S", "'a'", "A 'b' S");
     parsingTable.addRule("S", "'c'", "A 'b' S");
     parsingTable.addRule("S", "'e'", "'e'");
-    parsingTable.addRule("S", "'" + FileParser::END_SYMBOL + "'", FileParser::EPSILON);
+    parsingTable.addRule("S", END_SYMBOL, EPSILON);
 
     parsingTable.addRule("A", "'a'", "'a'");
-    parsingTable.addRule("A", "'b'", FileParser::SYNC);
+    parsingTable.addRule("A", "'b'", SYNC);
     parsingTable.addRule("A", "'c'", "'c' A 'd'");
-    parsingTable.addRule("A", "'d'", FileParser::SYNC);
+    parsingTable.addRule("A", "'d'", SYNC);
 }
 
 void initTokensQue21(queue<string>& tokensQue) {
@@ -62,10 +62,10 @@ void initTokensQue22(queue<string>& tokensQue) {
 
 void testFileParse() {
     ParsingTable parsingTable;
-    initParsingTable2(parsingTable);
+    initParsingTable1(parsingTable);
 
     queue<string> tokensQue;
-    initTokensQue22(tokensQue);
+    initTokensQue1(tokensQue);
 
     list<string> output = FileParser::parse(tokensQue, parsingTable);
     for (auto& str : output) {

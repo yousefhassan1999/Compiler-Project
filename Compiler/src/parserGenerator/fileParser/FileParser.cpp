@@ -1,11 +1,8 @@
 #include "FileParser.h"
 #include "../../common/ErrorLogger.h"
+#include "../parseTable/ParseTable.h"
 #include <stack>
 #include <bits/stdc++.h>
-
-const string FileParser::END_SYMBOL = "$";
-const string FileParser::EPSILON = "Epsilon";
-const string FileParser::SYNC = "Sync";
 
 bool terminal(const string& symbol) {
     return symbol[0] == '\'';
@@ -15,8 +12,9 @@ list<string> FileParser::parse(queue<string> tokensQue, ParsingTable &parsingTab
     list<string> output;
     stack<string> parsingStack;
 
-    tokensQue.push(END_SYMBOL);
-    parsingStack.push("'" + END_SYMBOL + "'");
+    string endSymbol = END_SYMBOL;
+    tokensQue.push(endSymbol.substr(1, endSymbol.length() - 2));
+    parsingStack.push(END_SYMBOL);
     parsingStack.push(parsingTable.getStartingSymbol());
     output.push_back(parsingTable.getStartingSymbol());
 
