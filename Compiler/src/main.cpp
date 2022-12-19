@@ -17,7 +17,5 @@ int main() {
         cout << '\n';
     }
     ParseTable p(*test.GetCFGRulesVec());
-
-
     return 0;
 }

@@ -13,13 +13,8 @@ using namespace std;
 void ParseTable::createParseTable() {
     createFirst();
     createFollows();
-
+    printResults();
 }
-
-string ParseTable::getRule(string nonTerminal, char terminal) {
-    return {};
-}
-
 
 void ParseTable::createFollows() {
     follows[startSymbol].insert("'$'");
@@ -31,12 +26,12 @@ void ParseTable::createFollows() {
                 for (int i = 0; i < words.size(); i++) {
                     if (words[i][0] != '\'') { // check non-terminal
                         bool addFollow = true;
-                        int j = i+1;
+                        int j = i + 1;
                         while (j != words.size() && addFollow) {
                             addFollow = false;
                             if (words[i + 1][0] == '\'') { // check terminal
                                 follows[words[i]].insert(words[i + 1]);
-                                continue;
+                                break;
                             }
                             //add first except epsilon
                             for (const string &firstElement: first[words[i + 1]]) {
@@ -46,10 +41,11 @@ void ParseTable::createFollows() {
                                 }
                                 follows[words[i]].insert(firstElement);
                             }
+                            j++;
                         }
-                        if (addFollow && words[i] != rule.GetNonTerminal()){
+                        if (addFollow && words[i] != rule.GetNonTerminal()) {
                             // add follows
-                            for (const string& followElement: follows[rule.GetNonTerminal()]) {
+                            for (const string &followElement: follows[rule.GetNonTerminal()]) {
                                 follows[words[i]].insert(followElement);
                             }
                         }
@@ -61,23 +57,12 @@ void ParseTable::createFollows() {
 }
 
 void ParseTable::createFirst() {
-    for(auto it = parserRules.begin(); it != parserRules.end();++it){
-        CFGContainer c = *it;
-        container.insert({c.GetNonTerminal(),*c.GetRHS()});
+    for (auto c: parserRules) {
+        container.insert({c.GetNonTerminal(), *c.GetRHS()});
     }
-    for(auto it = parserRules.begin(); it != parserRules.end();++it){
-        CFGContainer c = *it;
-        calc_first(c.GetNonTerminal(),*c.GetRHS());
+    for (auto c: parserRules) {
+        calc_first(c.GetNonTerminal(), *c.GetRHS());
     }
-   /* for(auto it = parserRules.begin(); it != parserRules.end();++it){
-        CFGContainer c = *it;
-        cout<<c.GetNonTerminal()<<"--> ";
-        //calc_first(c.GetNonTerminal(),*c.GetRHS());
-        for (const auto& elem: first[c.GetNonTerminal()]) {
-            cout<<elem<<",";
-        }
-        cout<<endl;
-    }*/
 }
 
 vector<string> ParseTable::split(const string &str) {
@@ -91,37 +76,52 @@ vector<string> ParseTable::split(const string &str) {
 }
 
 
-void ParseTable::calc_first(string k, list<string> RHS) {
-    if(!first[k].empty()){return;}
-
-    for(auto it = RHS.begin(); it != RHS.end();++it){
-        string str = *it;
-        if(str[0]=='\''){
+void ParseTable::calc_first(const string &k, const list<string> &RHS) {
+    if (!first[k].empty()) { return; }
+    for (auto str: RHS) {
+        if (str[0] == '\'') {
             string t = "'";
             int z = 1;
-            while(str[z]!='\''){
-                t=t+str[z];
+            while (str[z] != '\'') {
+                t += str[z];
                 z++;
             }
-            t=t+str[z];
+            t += str[z];
             first[k].insert(t);
-        }else if(str == EPSILON){
+        } else if (str == EPSILON) {
             first[k].insert(EPSILON);
-        }else{
-            vector<string> out= split(str);
-            //tokenize(str, ' ', out);
+        } else {
+            vector<string> out = split(str);
             bool cnt = true;
-            for(int i = 0 ; cnt && (i < out.size() ) ; i++){
+            for (int i = 0; cnt && (i < out.size()); i++) {
                 cnt = false;
                 list<string> c = container[out[i]];
-                calc_first(out[i],c);
+                calc_first(out[i], c);
                 unordered_set<string> s = first[out[i]];
-                for (const auto& elem: s) {
-                    if(elem == EPSILON) cnt = true;
+                for (const auto &elem: s) {
+                    if (elem == EPSILON) cnt = true;
                     first[k].insert(elem);
                 }
             }
-
         }
+    }
+}
+
+void ParseTable::printResults() {
+    cout << "first:" << endl;
+    for (const auto &c: parserRules) {
+        cout << c.GetNonTerminal() << "--> ";
+        for (const auto &elem: first[c.GetNonTerminal()]) {
+            cout << elem << ",";
+        }
+        cout << endl;
+    }
+    cout << endl << "follows:" << endl;
+    for (const auto &c: parserRules) {
+        cout << c.GetNonTerminal() << "--> ";
+        for (const auto &elem: follows[c.GetNonTerminal()]) {
+            cout << elem << ",";
+        }
+        cout << endl;
     }
 }

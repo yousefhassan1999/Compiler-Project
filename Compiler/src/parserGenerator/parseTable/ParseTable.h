@@ -24,10 +24,11 @@ private:
     std::list<CFGContainer> parserRules;
 
     static std::vector<std::string> split(const std::string& str);
-    void calc_first(string k,list<string> RHS);
+    void calc_first(const string& k,const list<string>& RHS);
     void createFirst();
     void createFollows();
     void createParseTable();
+    void printResults();
 
 public:
     explicit ParseTable(const std::list<CFGContainer>& rules) {
@@ -39,11 +40,6 @@ public:
         parserRules = rules;
         createParseTable();
     }
-
-//    ~ParseTable(){
-//        delete first;
-//        delete follows;
-//    }
 
     std::string getRule(std::string nonTerminal, char terminal);
 
