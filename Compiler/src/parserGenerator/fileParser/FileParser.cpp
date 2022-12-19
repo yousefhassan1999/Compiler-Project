@@ -2,7 +2,6 @@
 #include "../../common/ErrorLogger.h"
 #include "../parseTable/ParseTable.h"
 #include <stack>
-#include <bits/stdc++.h>
 
 bool terminal(const string& symbol) {
     return symbol[0] == '\'';
