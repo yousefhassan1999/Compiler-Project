@@ -87,14 +87,7 @@ void ParseTable::calc_first(const string &k, const list<string> &RHS) {
     if (!first[k].empty()) { return; }
     for (auto str: RHS) {
         if (str[0] == '\'') {
-            string t = "'";
-            int z = 1;
-            while (str[z] != '\'') {
-                t += str[z];
-                z++;
-            }
-            t += str[z];
-            first[k].insert(t);
+            first[k].insert(str);
         } else if (str == EPSILON) {
             first[k].insert(EPSILON);
         } else {
