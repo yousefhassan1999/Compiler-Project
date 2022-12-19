@@ -1,6 +1,6 @@
 #include "FileParser.h"
 
-void initParsingTable(ParsingTable& parsingTable) {
+void initParsingTable1(ParsingTable& parsingTable) {
     parsingTable.setStartingSymbol("S");
     parsingTable.addRule("S", "'s'", "R T");
     parsingTable.addRule("S", "'v'", "R T");
@@ -21,7 +21,7 @@ void initParsingTable(ParsingTable& parsingTable) {
     parsingTable.addRule("T", "'" + FileParser::END_SYMBOL + "'", FileParser::EPSILON);
 }
 
-void initTokensQue(queue<string>& tokensQue) {
+void initTokensQue1(queue<string>& tokensQue) {
     tokensQue.push("s");
     tokensQue.push("s");
     tokensQue.push("u");
@@ -33,12 +33,39 @@ void initTokensQue(queue<string>& tokensQue) {
     tokensQue.push("t");
 }
 
+void initParsingTable2(ParsingTable& parsingTable) {
+    parsingTable.setStartingSymbol("S");
+    parsingTable.addRule("S", "'a'", "A 'b' S");
+    parsingTable.addRule("S", "'c'", "A 'b' S");
+    parsingTable.addRule("S", "'e'", "'e'");
+    parsingTable.addRule("S", "'" + FileParser::END_SYMBOL + "'", FileParser::EPSILON);
+
+    parsingTable.addRule("A", "'a'", "'a'");
+    parsingTable.addRule("A", "'b'", FileParser::SYNC);
+    parsingTable.addRule("A", "'c'", "'c' A 'd'");
+    parsingTable.addRule("A", "'d'", FileParser::SYNC);
+}
+
+void initTokensQue21(queue<string>& tokensQue) {
+    tokensQue.push("a");
+    tokensQue.push("a");
+    tokensQue.push("b");
+}
+
+void initTokensQue22(queue<string>& tokensQue) {
+    tokensQue.push("c");
+    tokensQue.push("e");
+    tokensQue.push("a");
+    tokensQue.push("d");
+    tokensQue.push("b");
+}
+
 void testFileParse() {
     ParsingTable parsingTable;
-    initParsingTable(parsingTable);
+    initParsingTable2(parsingTable);
 
     queue<string> tokensQue;
-    initTokensQue(tokensQue);
+    initTokensQue22(tokensQue);
 
     list<string> output = FileParser::parse(tokensQue, parsingTable);
     for (auto& str : output) {

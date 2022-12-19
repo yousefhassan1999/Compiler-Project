@@ -4,8 +4,8 @@
 #include <bits/stdc++.h>
 
 const string FileParser::END_SYMBOL = "$";
-const string FileParser::EPSILON = "epsilon";
-const string FileParser::SYNC = "sync";
+const string FileParser::EPSILON = "Epsilon";
+const string FileParser::SYNC = "Sync";
 
 bool terminal(const string& symbol) {
     return symbol[0] == '\'';
@@ -18,6 +18,7 @@ list<string> FileParser::parse(queue<string> tokensQue, ParsingTable &parsingTab
     tokensQue.push(END_SYMBOL);
     parsingStack.push("'" + END_SYMBOL + "'");
     parsingStack.push(parsingTable.getStartingSymbol());
+    output.push_back(parsingTable.getStartingSymbol());
 
     while (!parsingStack.empty() && !tokensQue.empty()) {
         string token = "'" + tokensQue.front() + "'";
@@ -44,19 +45,21 @@ list<string> FileParser::parse(queue<string> tokensQue, ParsingTable &parsingTab
             }
         }
         else {
-            if(stackTop != token){
+            if(stackTop == token){
+                tokensQue.pop();
+            }
+            else {
                 ostringstream errorMsg;
                 errorMsg << "token doesn't match -> expected: " << stackTop << ", found: " << token;
                 ErrorLogger::parsingError(errorMsg.str());
             }
             parsingStack.pop();
-            tokensQue.pop();
         }
     }
 
-    ErrorLogger::parsingError("unable to complete parsing");
     if(!parsingStack.empty() || !tokensQue.empty()){
         ErrorLogger::parsingError("unable to complete parsing");
+        output.emplace_back("Failed to continue parsing, check the errors log");
     }
 
     return output;
