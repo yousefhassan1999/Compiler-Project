@@ -12,6 +12,7 @@
 #include <list>
 #include <vector>
 #include "src/parserGenerator/CFGRules/CFGContainer.h"
+#include "FirstObject.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ private:
     unordered_map<string, int> nonTerminalIndices;
     unordered_map<string, int> terminalIndices;
     string startSymbol;
-    unordered_map<string, unordered_set<string>> first;
+    unordered_map<string, vector<FirstObject>> first;
     unordered_map<string, list<string>> container;
     unordered_map<string, unordered_set<string>> follows;
     string **parseTable;

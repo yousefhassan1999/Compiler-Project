@@ -31,4 +31,4 @@ add_executable(Compiler
         src/lexicalAnalysis/dfa_minimization/DFAMinimizer.h
         src/lexicalAnalysis/LexicalAnalysis.h
         src/parserGenerator/parseTable/ParseTable.cpp
-        src/parserGenerator/parseTable/ParseTable.h)
+        src/parserGenerator/parseTable/ParseTable.h src/parserGenerator/parseTable/FirstObject.cpp src/parserGenerator/parseTable/FirstObject.h)
