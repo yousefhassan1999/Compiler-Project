@@ -1,5 +1,6 @@
 #include "src/lexicalAnalysis/LexicalAnalysis.h"
 #include "src/ParserGenerator/CFGRules/CFGRules.h"
+#include "src/parserGenerator/parseTable/ParseTable.h"
 
 using namespace std;
 
@@ -15,5 +16,6 @@ int main() {
             cout  << *j << '\t'<< '\t';
         cout << '\n';
     }
+    ParseTable p(*test.GetCFGRulesVec());
     return 0;
 }

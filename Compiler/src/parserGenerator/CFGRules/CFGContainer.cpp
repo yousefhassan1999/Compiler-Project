@@ -12,7 +12,7 @@ void CFGContainer::SetRHS(list<string> newRHS) {
     RHS = newRHS;
 }
 
-string CFGContainer::GetNonTerminal() {
+string CFGContainer::GetNonTerminal() const {
     return NonTerminal;
 }
 
