@@ -4,20 +4,29 @@
 #include <string>
 #include <list>
 #include <queue>
+#include <stack>
+#include <unordered_map>
 #include <iostream>
 #include <fstream>
-#include <stack>
 
 using namespace std;
 
 class ParsingTable {
+private:
+    unordered_map<string, unordered_map<string, string>> table;
+    string startingSymbol;
 public:
-    const string startingSymbol = "METHOD_BODY";
-    string getRule(const string& terminal, const string& nonTerminal) {
-        return "'(' EXPRESSION ')'";
+    void setStartingSymbol(const string& symbol) {
+        startingSymbol = symbol;
     }
-    bool nonTerminal(const string& symbol) {
-        return true;
+    string getStartingSymbol() {
+        return startingSymbol;
+    }
+    void addRule(const string& nonTerminal, const string& terminal, const string& rule) {
+        table[nonTerminal][terminal] = rule;
+    }
+    string getRule(const string& terminal, const string& nonTerminal) {
+        return table[nonTerminal][terminal];
     }
 };
 
@@ -26,7 +35,9 @@ private:
     static void pushRuleToStack(const string& basicString, std::stack<string>& stack1);
 public:
     static const string END_SYMBOL;
-    static list<string> parse(const string& filePath, queue<string>& tokensQue, ParsingTable& parsingTable);
+    static const string EPSILON;
+    static const string SYNC;
+    static list<string> parse(queue<string> tokensQue, ParsingTable& parsingTable);
     static void writeOutput(const string& filePath, list<string>& output);
 };
 
