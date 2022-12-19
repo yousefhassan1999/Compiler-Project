@@ -8,12 +8,19 @@
 
 #define EPSILON "Epsilon"
 
-using namespace std;
-
 void ParseTable::createParseTable() {
     createFirst();
     createFollows();
     printResults();
+
+    unsigned long long nonTerminalSize = nonTerminalIndices.size();
+    unsigned long long terminalSize = nonTerminalIndices.size();// modify this to match terminal size
+    parseTable = new string *[nonTerminalSize];
+    for (int i = 0 ; i < nonTerminalSize; i++){
+        parseTable[i] = new string [terminalSize];
+    }
+
+
 }
 
 void ParseTable::createFollows() {
@@ -124,4 +131,8 @@ void ParseTable::printResults() {
         }
         cout << endl;
     }
+}
+
+string ParseTable::getRule(const string &nonTerminal, const string &terminal) {
+    return std::string();
 }

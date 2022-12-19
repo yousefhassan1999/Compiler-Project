@@ -12,36 +12,44 @@
 #include <list>
 #include <vector>
 #include "src/parserGenerator/CFGRules/CFGContainer.h"
+
 using namespace std;
+
 class ParseTable {
 private:
-    std::unordered_map<std::string, int> nonTerminalIndices;
-    std::unordered_map<std::string, int> terminalIndices;
-    std::string startSymbol;
-    std::unordered_map<std::string, std::unordered_set<std::string>> first;
-    unordered_map<string,list<string>> container;
-    std::unordered_map<std::string, std::unordered_set<std::string>> follows;
-    std::list<CFGContainer> parserRules;
+    unordered_map<string, int> nonTerminalIndices;
+    unordered_map<string, int> terminalIndices;
+    string startSymbol;
+    unordered_map<string, unordered_set<string>> first;
+    unordered_map<string, list<string>> container;
+    unordered_map<string, unordered_set<string>> follows;
+    string **parseTable;
+    list<CFGContainer> parserRules;
 
-    static std::vector<std::string> split(const std::string& str);
-    void calc_first(const string& k,const list<string>& RHS);
+    static vector<string> split(const string &str);
+
+    void calc_first(const string &k, const list<string> &RHS);
+
     void createFirst();
+
     void createFollows();
+
     void createParseTable();
+
     void printResults();
 
 public:
-    explicit ParseTable(const std::list<CFGContainer>& rules) {
+    explicit ParseTable(const list<CFGContainer> &rules) {
         startSymbol = rules.front().GetNonTerminal();
-        int i =0;
-        for (const auto& rule:rules) {
-            nonTerminalIndices.insert({rule.GetNonTerminal(),i});
+        int i = 0;
+        for (const auto &rule: rules) {
+            nonTerminalIndices.insert({rule.GetNonTerminal(), i});
         }
         parserRules = rules;
         createParseTable();
     }
 
-    std::string getRule(std::string nonTerminal, char terminal);
+    string getRule(const string &nonTerminal, const string &terminal);
 
 
 };
