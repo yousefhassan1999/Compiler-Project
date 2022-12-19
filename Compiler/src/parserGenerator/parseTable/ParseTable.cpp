@@ -32,7 +32,7 @@ void ParseTable::createParseTable() {
 }
 
 void ParseTable::createFollows() {
-    follows[startSymbol].insert(STACK_TOP);
+    follows[startSymbol].insert(END_SYMBOL);
     int attempts = 10;
     while (attempts--) {
         for (auto rule: parserRules) {

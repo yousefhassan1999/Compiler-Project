@@ -7,7 +7,7 @@
 
 #define EPSILON "Epsilon"
 #define SYNC "Sync"
-#define STACK_TOP "'$'"
+#define END_SYMBOL "'$'"
 
 #include <string>
 #include <unordered_map>
@@ -63,7 +63,7 @@ public:
             terminalIndices.insert({terminal,i});
             i++;
         }
-        terminalIndices.insert({STACK_TOP,i});
+        terminalIndices.insert({END_SYMBOL, i});
         parserRules = rules;
         createParseTable();
     }
