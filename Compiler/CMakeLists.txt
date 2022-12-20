@@ -35,4 +35,4 @@ add_executable(Compiler
         src/parserGenerator/fileParser/FileParser.cpp
         src/parserGenerator/fileParser/FileParser.h
         src/common/ErrorLogger.cpp
-        src/common/ErrorLogger.h)
+        src/common/ErrorLogger.h src/lexicalAnalysis/LexicalAnalyzer.cpp src/lexicalAnalysis/LexicalAnalyzer.h)

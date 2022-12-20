@@ -2,21 +2,25 @@
 #include "src/ParserGenerator/CFGRules/CFGRules.h"
 #include "src/parserGenerator/parseTable/ParseTable.h"
 #include "src/parserGenerator/fileParser/FileParserTest.cpp"
+#include "src/lexicalAnalysis/LexicalAnalyzer.h"
+
 using namespace std;
 
 int main() {
-//    LexicalAnalysis::analyzeInput();
-//    CFGRules test ;
-//    test.readFileContent("../JavaCFG.txt");
-//    test.RemoveLeftRec();
-//    test.ApplyLeftRefactor();
-//    for (auto i = test.GetCFGRulesVec()->begin(); i != test.GetCFGRulesVec()->end(); ++i) {
-//        cout << '\t' << i->GetNonTerminal() << '\t';
-//        for (auto j = i->GetRHS()->begin(); j != i->GetRHS()->end(); ++j)
-//            cout  << *j << '\t'<< '\t';
-//        cout << '\n';
-//    }
-//    ParseTable p(*test.GetCFGRulesVec());
-    testFileParse();
+    const string rulesPath = "../lexical rules.txt";
+    const string inputFile = "../input file.txt";
+    const string lexicalOutput = "../lexical output.txt";
+
+    LexicalAnalyzer lexicalAnalyzer;
+    lexicalAnalyzer.createMinimizedDFA(rulesPath);
+    lexicalAnalyzer.initLexicalReader(inputFile, lexicalOutput);
+    int count = 0;
+    string token;
+    while (!(token = lexicalAnalyzer.nextToken()).empty()) {
+        ++count;
+        cout << "[" <<token << "]\n";
+    }
+    cout << count;
+
     return 0;
 }
