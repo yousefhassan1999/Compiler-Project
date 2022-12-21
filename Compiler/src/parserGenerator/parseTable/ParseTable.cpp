@@ -153,7 +153,7 @@ void ParseTable::printResults() {
         cout << terminalIndex.first << " --> " << terminalIndex.second << endl;
     }
 
-    cout << endl << "parse2 table:" << endl;
+    cout << endl << "parse table:" << endl;
     for (int i = 0; i < nonTerminalIndices.size(); i++) {
         for (int j = 0; j < terminalIndices.size(); j++) {
             cout << "+" << parseTable[i][j] << "\t";
