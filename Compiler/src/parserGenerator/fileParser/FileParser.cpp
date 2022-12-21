@@ -2,6 +2,8 @@
 #include "../../common/ErrorLogger.h"
 #include <stack>
 
+const int LIMIT = 1000;
+
 static bool terminal(const string& symbol) {
     return symbol[0] == '\'';
 }
@@ -15,8 +17,10 @@ list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &par
     output.push_back(parsingTable.getStartingSymbol());
     string token = "'" + lexicalAnalyzer.nextToken() + "'";
 
+    int loopsCount = 0;
     bool noMoreTokens = false;
-    while (!parsingStack.empty() && !(token.empty() && noMoreTokens)) {
+    while (!parsingStack.empty() && !(token.empty() && noMoreTokens) && loopsCount < LIMIT) {
+        ++loopsCount;
         if(token.empty() && !noMoreTokens) {
             token = END_SYMBOL;
             noMoreTokens = true;
@@ -58,6 +62,8 @@ list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &par
 
     if(!(parsingStack.empty() && token.empty())){
         ErrorLogger::parsingError("unable to complete parsing");
+        if(loopsCount == LIMIT)
+            ErrorLogger::parsingError("Max number of iterations exceeded, possible infinite loop");
         output.emplace_back("Failed to complete parsing, check the errors log");
     }
 
