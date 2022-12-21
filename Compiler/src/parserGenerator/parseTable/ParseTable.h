@@ -70,7 +70,7 @@ public:
 
 
     string getRule(const string &nonTerminal, const string &terminal);
-
+    string getStartingSymbol();
 
 };
 

@@ -1,15 +1,6 @@
-int n = 3
-float f = 56.7L;
-float f2 = 5.67E1
-x x,x 5 n
-if (f >50) { f = f2 / 2}
-else { f = f2 * 2}
-
-int x = 70 e b);
-
-int x = 70e;
-int x = 70&y;
-
-boolean x = false
-
-boolean x = 0
+int x;
+x = 5;
+if(x > 2)
+{
+    x = 0;
+}

@@ -67,7 +67,7 @@ void testFileParse() {
     queue<string> tokensQue;
     initTokensQue1(tokensQue);
 
-    list<string> output = FileParser::parse(tokensQue, parsingTable);
+    list<string> output = FileParser::parse2(tokensQue, parsingTable);
     for (auto& str : output) {
         cout << str << endl;
     }

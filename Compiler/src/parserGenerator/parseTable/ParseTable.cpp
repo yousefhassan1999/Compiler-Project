@@ -14,18 +14,23 @@ void ParseTable::createParseTable() {
     for (int i = 0; i < nonTerminalSize; i++) {
         parseTable[i] = new string[terminalIndices.size()];
     }
-    for (const auto& firstElement : first){
+    for (const auto &firstElement: first) {
         string nonTerminal = firstElement.first;
         string followContent = SYNC;
-        for (auto firstElementContent: firstElement.second){
-            if (firstElementContent.GetTerminal() == EPSILON){
+        for (auto firstElementContent: firstElement.second) {
+            if (firstElementContent.GetTerminal() == EPSILON) {
                 followContent = EPSILON;
                 continue;
             }
             parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[firstElementContent.GetTerminal()]] = firstElementContent.GetRule();
         }
-        for (const auto& followElement : follows[nonTerminal]){
-            parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[followElement]] = followContent;
+        for (const auto &followElement: follows[nonTerminal]) {
+            int nonTerminalIndex = nonTerminalIndices[nonTerminal], terminalIndex = terminalIndices[followElement];
+            if (parseTable[nonTerminalIndex][terminalIndex].empty()) {
+                parseTable[nonTerminalIndex][terminalIndex] = followContent;
+            } else if (followContent == EPSILON) {
+                cout << "ambiguous grammar" << endl;
+            }
         }
     }
     printResults();
@@ -144,14 +149,14 @@ void ParseTable::printResults() {
     }
 
     cout << endl << "terminalIndices:" << endl;
-    for(const auto& terminalIndex : terminalIndices){
+    for (const auto &terminalIndex: terminalIndices) {
         cout << terminalIndex.first << " --> " << terminalIndex.second << endl;
     }
 
-    cout << endl << "parse table:" << endl;
-    for (int i = 0 ; i < nonTerminalIndices.size() ; i++){
-        for (int j = 0 ; j < terminalIndices.size(); j++){
-            cout << "+" << parseTable[i][j] << "\t" ;
+    cout << endl << "parse2 table:" << endl;
+    for (int i = 0; i < nonTerminalIndices.size(); i++) {
+        for (int j = 0; j < terminalIndices.size(); j++) {
+            cout << "+" << parseTable[i][j] << "\t";
         }
         cout << endl;
     }
@@ -159,4 +164,8 @@ void ParseTable::printResults() {
 
 string ParseTable::getRule(const string &nonTerminal, const string &terminal) {
     return parseTable[nonTerminalIndices[nonTerminal]][terminalIndices[terminal]];
+}
+
+string ParseTable::getStartingSymbol() {
+    return startSymbol;
 }
