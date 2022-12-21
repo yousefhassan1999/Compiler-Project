@@ -21,7 +21,7 @@ list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &par
     bool noMoreTokens = false;
     while (!parsingStack.empty() && !(token.empty() && noMoreTokens) && loopsCount < LIMIT) {
         ++loopsCount;
-        if(token.empty() && !noMoreTokens) {
+        if(token == "''" && !noMoreTokens) {
             token = END_SYMBOL;
             noMoreTokens = true;
         }
@@ -31,14 +31,14 @@ list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &par
             string production = parsingTable.getRule(stackTop, token);
             if(production.empty()) { // Error
                 ostringstream errorMsg;
-                errorMsg << "no production -> non-terminal: " << stackTop << ", terminal: " << token;
-                ErrorLogger::parsingError(errorMsg.str());
+                errorMsg << "[%] no production -> non-terminal: " << stackTop << ", terminal: " << token;
+                output.push_back(errorMsg.str());
                 token = "'" + lexicalAnalyzer.nextToken() + "'";
             }
             else if(production == SYNC){ // Error
                 ostringstream errorMsg;
-                errorMsg << "sync -> non-terminal: " << stackTop << ", terminal: " << token;
-                ErrorLogger::parsingError(errorMsg.str());
+                errorMsg << "[%] sync -> non-terminal: " << stackTop << ", terminal: " << token;
+                output.push_back(errorMsg.str());
                 parsingStack.pop();
             }
             else {
@@ -53,18 +53,17 @@ list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &par
             }
             else {
                 ostringstream errorMsg;
-                errorMsg << "token doesn't match -> expected: " << stackTop << ", found: " << token;
-                ErrorLogger::parsingError(errorMsg.str());
+                errorMsg << "[%] token doesn't match -> expected: " << stackTop << ", found: " << token;
+                output.push_back(errorMsg.str());
             }
             parsingStack.pop();
         }
     }
 
-    if(!(parsingStack.empty() && token.empty())){
-        ErrorLogger::parsingError("unable to complete parsing");
+    if(!(parsingStack.empty() && token == "''")){
         if(loopsCount == LIMIT)
-            ErrorLogger::parsingError("Max number of iterations exceeded, possible infinite loop");
-        output.emplace_back("Failed to complete parsing, check the errors log");
+            output.emplace_back("[%] Max number of iterations exceeded, possible infinite loop");
+        output.emplace_back("[%] Failed to complete parsing");
     }
 
     return output;

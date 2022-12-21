@@ -13,7 +13,6 @@ int main() {
 
     LexicalAnalyzer lexicalAnalyzer;
     lexicalAnalyzer.createMinimizedDFA(rules);
-    lexicalAnalyzer.initLexicalReader(inputFile, lexicalOutput);
 
     CFGRules test ;
     test.readFileContent(CFG);
@@ -28,8 +27,14 @@ int main() {
 
     ParseTable parseTable(*test.GetCFGRulesVec());
 
-    list<string> output = FileParser::parse(lexicalAnalyzer, parseTable);
-    FileParser::writeOutput(parserOutput, output);
+    char parseAgain = 'y';
+    while (parseAgain == 'y'){
+        lexicalAnalyzer.initLexicalReader(inputFile, lexicalOutput);
+        list<string> output = FileParser::parse(lexicalAnalyzer, parseTable);
+        FileParser::writeOutput(parserOutput, output);
+        cout << "Successful Parsing, parse Again? (y)" << endl;
+        cin >> parseAgain;
+    }
 
     return 0;
 }
