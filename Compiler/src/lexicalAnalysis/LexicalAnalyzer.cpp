@@ -85,7 +85,7 @@ string LexicalAnalyzer::nextToken() {
     if(!inputFile.is_open()) return "";
 
     string token;
-    if(tokensQue.empty()) {
+    while(tokensQue.empty()) {
         if (inputFile >> token)
             parseToken(token);
         else

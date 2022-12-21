@@ -19,6 +19,12 @@ int main() {
     test.readFileContent(CFG);
     test.RemoveLeftRec();
     test.ApplyLeftRefactor();
+    for (auto & i : *test.GetCFGRulesVec()) {
+        cout << '\t' << i.GetNonTerminal() << '\t';
+        for (auto & j : *i.GetRHS())
+            cout  << j << '\t'<< '\t';
+        cout << '\n';
+    }
 
     ParseTable parseTable(*test.GetCFGRulesVec());
 
