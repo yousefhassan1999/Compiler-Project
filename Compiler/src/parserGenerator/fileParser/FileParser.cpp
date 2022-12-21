@@ -1,13 +1,70 @@
 #include "FileParser.h"
 #include "../../common/ErrorLogger.h"
-#include "../parseTable/ParseTable.h"
 #include <stack>
 
-bool terminal(const string& symbol) {
+static bool terminal(const string& symbol) {
     return symbol[0] == '\'';
 }
 
-list<string> FileParser::parse(queue<string> tokensQue, ParsingTable &parsingTable) {
+list<string> FileParser::parse(LexicalAnalyzer &lexicalAnalyzer, ParseTable &parsingTable) {
+    list<string> output;
+    stack<string> parsingStack;
+
+    parsingStack.push(END_SYMBOL);
+    parsingStack.push(parsingTable.getStartingSymbol());
+    output.push_back(parsingTable.getStartingSymbol());
+    string token = "'" + lexicalAnalyzer.nextToken() + "'";
+
+    bool noMoreTokens = false;
+    while (!parsingStack.empty() && !(token.empty() && noMoreTokens)) {
+        if(token.empty() && !noMoreTokens) {
+            token = END_SYMBOL;
+            noMoreTokens = true;
+        }
+        string stackTop = parsingStack.top();
+
+        if(!terminal(stackTop)){
+            string production = parsingTable.getRule(stackTop, token);
+            if(production.empty()) { // Error
+                ostringstream errorMsg;
+                errorMsg << "no production -> non-terminal: " << stackTop << ", terminal: " << token;
+                ErrorLogger::parsingError(errorMsg.str());
+                token = "'" + lexicalAnalyzer.nextToken() + "'";
+            }
+            else if(production == SYNC){ // Error
+                ostringstream errorMsg;
+                errorMsg << "sync -> non-terminal: " << stackTop << ", terminal: " << token;
+                ErrorLogger::parsingError(errorMsg.str());
+                parsingStack.pop();
+            }
+            else {
+                parsingStack.pop();
+                pushRuleToStack(production, parsingStack);
+                output.push_back(production);
+            }
+        }
+        else {
+            if(stackTop == token){
+                token = "'" + lexicalAnalyzer.nextToken() + "'";
+            }
+            else {
+                ostringstream errorMsg;
+                errorMsg << "token doesn't match -> expected: " << stackTop << ", found: " << token;
+                ErrorLogger::parsingError(errorMsg.str());
+            }
+            parsingStack.pop();
+        }
+    }
+
+    if(!(parsingStack.empty() && token.empty())){
+        ErrorLogger::parsingError("unable to complete parsing");
+        output.emplace_back("Failed to complete parsing, check the errors log");
+    }
+
+    return output;
+}
+
+list<string> FileParser::parse2(queue<string> tokensQue, ParsingTable &parsingTable) {
     list<string> output;
     stack<string> parsingStack;
 
