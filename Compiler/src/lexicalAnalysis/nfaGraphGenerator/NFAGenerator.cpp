@@ -27,6 +27,7 @@ NFAstate *NFAGenerator::generateNFA(LexicalRules *lexicalRules) {
                 applyAnd(&nfaStack);
             } else {
                 if (ch != '\\' || last == '\\'){
+                    if(ch == 'L' && last =='\\') ch = EPSILON;
                     nfaStack.push(generateBaseNFA(ch));
                 } else {
                     ignoreAnd = true;
