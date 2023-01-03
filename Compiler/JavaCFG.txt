@@ -1,2 +1,3 @@
-# S = A 'b' S | 'e' | Epsilon
-# A = 'a' | 'c' A 'd'
+# S = 'i' C 't' S E | 'a'
+# E = 'e' S | Epsilon
+# C = 'b'
