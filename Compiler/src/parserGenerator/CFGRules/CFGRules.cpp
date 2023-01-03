@@ -21,10 +21,23 @@ void CFGRules::readFileContent(const string &Path) {
             string LHSString = deleteLeadingAndTrailingSpace(myProduction.substr(1, pos - 2));
             list<string> RHS = Split(LHSString, deleteLeadingAndTrailingSpace(
                     myProduction.substr(pos + 1, myProduction.size() - 1)), " | ");
-            CFGContainer container;
-            container.SetNonTerminal(LHSString);
-            container.SetRHS(RHS);
-            CFGRulesVec.push_back(container);
+            bool check = false;
+            list<CFGContainer>::iterator itr1;
+            for (itr1 = CFGRulesVec.begin(); itr1 != CFGRulesVec.end(); ++itr1) {
+                if(itr1->GetNonTerminal() == LHSString){
+                    check = true;
+                    list<string> newRHS = *itr1->GetRHS();
+                    newRHS.splice(newRHS.end(),RHS);
+                    itr1->SetRHS(newRHS);
+                    break;
+                }
+            }
+            if(!check){
+                CFGContainer container;
+                container.SetNonTerminal(LHSString);
+                container.SetRHS(RHS);
+                CFGRulesVec.push_back(container);
+            }
 
             myProduction = myLine;
         }
